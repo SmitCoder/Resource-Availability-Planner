@@ -1,0 +1,50 @@
+.quarterly-table-container {
+  margin: 0 auto;
+  border: 2px solid black;
+  margin-top: 23px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border: 5px solid #ccc;
+
+  margin: 23px 20px 23px 20px;
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  border: 1px groove black;
+  padding: 8px;
+}
+
+.cell {
+  text-align: center;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+}
+
+/* .cell {
+  border: 1px solid #ddd;
+  padding: 8px;
+  position: relative; /* Make the parent container relative */
+} */
+
+.weekend::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 16%;
+  width: 67%;
+  background-color: lightblue;
+}
