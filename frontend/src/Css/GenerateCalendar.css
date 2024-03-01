@@ -1,0 +1,258 @@
+.main {
+  /* margin: 2rem; */
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.Handlebar {
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  transition: border-color 0.3s ease;
+  border: 1.5px solid rgb(0, 0, 0);
+}
+.Handlebar:hover {
+  border-color: rgb(0, 85, 145);
+}
+
+.container img {
+  height: 24px;
+  /* width: 18rem; */
+}
+.pallate2 {
+  display: none;
+}
+#start_date,
+#end_date {
+  border-radius: 6px;
+  margin-right: 12px;
+  /* font-weight: 500; */
+  /* font-size: small; */
+  /* font-style: italic; */
+}
+.searchBar input {
+  border-radius: 6px;
+  padding: 3px 5px;
+  outline: none;
+}
+
+.container2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  /* margin-right: 5rem; */
+}
+.container2 .searchBar input {
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+  border: 1.5px solid rgb(0, 0, 0);
+}
+.dates-controler {
+  display: flex;
+}
+.fa-solid,
+.fas {
+  font-weight: 900;
+  padding: 15px 5px;
+}
+
+.container {
+  /* border: 1px solid rgb(169, 15, 15); */
+  margin-top: 20px;
+}
+
+/* . */
+.search-input {
+  padding: 8px 5px 5px 5px;
+  border: 1px solid #cbc7c7;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+  font-size: small;
+}
+
+.search-input:hover,
+.search-input:focus {
+  border-color: rgb(0, 85, 145); /* Change to your desired hover color */
+}
+
+.search-input::before {
+  content: "";
+  position: relative;
+  border: 2px solid rgb(0, 85, 145);
+}
+.search-input::after {
+  border: 1px solid rgb(0, 85, 145);
+  text-decoration: none;
+  border-radius: 15px;
+  background-color: rgb(0, 85, 145);
+}
+
+.table-wrapper {
+  /* overscroll-behavior: contain; */
+  overflow-x: auto;
+  border: 1px groove rgb(0, 85, 145);
+  margin: 0 2rem;
+  /* margin-right: 2rem; */
+  position: relative;
+  max-height: 70vh;
+  margin-top: 1rem;
+  /* scrollbar-width: 1px; */
+}
+
+span i {
+  /* display: inline-block; */
+  margin-left: -12px;
+  align-self: center;
+  align-items: center;
+  padding: 0px 0.2rem;
+  vertical-align: 0;
+  color: rgb(0, 85, 145);
+}
+/* span i{
+  height: 20px;
+  display: flex;
+} */
+#myTable {
+  border-collapse: collapse;
+  min-width: 100%; /* Ensure the table fills the container */
+  table-layout: fixed; /* Prevent columns from resizing */
+}
+#myTable tbody td {
+  background-color: white;
+  /* max-width: 1rem; */
+  /* align-items: center; */
+  text-align: center;
+  align-content: center;
+  /* width: 1rem; */
+  /* font-size: 15px; */
+}
+#myTable th,
+#myTable td {
+  border: 1px solid black;
+  padding: 7px; /* Adjust padding as needed */
+  background-color: rgb(255, 255, 255);
+  text-align: center;
+  align-items: center;
+}
+
+/* #myTable th {
+  position: sticky;
+  top: 0;
+  
+} */
+
+#myTable tr:first-child {
+  position: sticky;
+  left: 0;
+  top: -2px;
+  z-index: 1; /* Ensure sticky cells stay above the scrollable area */
+  background-color: rgb(13, 5, 12);
+}
+#myTable tr:nth-child(2) {
+  position: sticky;
+  top: 32px;
+  /* z-index: 1; Ensure sticky cells stay above the scrollable area */
+  background-color: rgb(12, 6, 12);
+}
+#myTable th:first-child {
+  background-color: white;
+  position: sticky;
+  top: 0;
+  left: -2px;
+  z-index: 5;
+}
+
+.datarows {
+  position: sticky;
+  left: 0px;
+  background-color: rgb(245, 111, 245);
+}
+/* #myTable thead th {
+    position: sticky;
+    top: 0;
+    background-color: white;
+  } */
+
+/* #myTable tbody td {
+    position: sticky;
+    left: 0;
+    top: 0;
+    background-color: rgb(73, 20, 20);
+  } */
+
+.blur {
+  filter: blur(3px); /* Apply blur effect when modal is open */
+}
+
+/* .search-input:hover,
+  .search-input:focus {
+    border-color: #08315c; 
+  } */
+
+@media screen and (max-width: 1000px) {
+  .main {
+    /* background-color: aquamarine; */
+    /* padding: 0px; */
+    justify-content: space-evenly;
+    gap: 0.5rem;
+  }
+
+  /* .dates-controler{
+    background-color: bisque;
+   } */
+
+  .container2 img {
+    /* background-color: rgb(18, 136, 136); */
+    width: 15.3rem;
+    height: 1.45rem;
+  }
+}
+
+@media screen and (max-width: 770px) {
+  .main {
+    align-items: center;
+    align-content: center;
+    flex-direction: column-reverse;
+  }
+
+  .container2 {
+    margin-right: 2.5rem;
+  }
+
+  #start_date,
+  #end_date {
+    font-size: small;
+  }
+
+  .container2 .searchBar input {
+    width: 17.1rem;
+    margin-left: 29px;
+  }
+
+  .container2 img {
+    display: none;
+  }
+  .table-wrapper {
+    margin: 0 1.5rem;
+  }
+  .pallate2 {
+    display: inline-block;
+    width: 14.5rem;
+    height: 1.3rem;
+  }
+
+  #myTable th {
+    padding: 3.5px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .table-wrapper {
+    margin-top: 0.5rem;
+  }
+}

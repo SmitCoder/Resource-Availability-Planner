@@ -1,0 +1,102 @@
+.box {
+  /* display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center; */
+  /* height: 50vh; */
+  z-index: 100;
+  position: relative;
+  /* display: block; */
+}
+.container1 i {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  color: rgb(0, 85, 145);
+  cursor: pointer;
+}
+
+.container1 {
+  background: linear-gradient(90deg, #f1f5f7, #dce6eb);
+  /* background-color: beige; */
+  height: 48vh;
+  width: 40vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  box-shadow: 4px 4px 10px -5px rgb(0, 85, 145);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -8%);
+}
+.main-content {
+  /* background-color: aqua; */
+  display: flex;
+  flex-direction: column;
+  /* height: 12rem; */
+  gap: 1rem;
+}
+
+.submit-btn {
+  width: 100px;
+  align-self: center;
+  border-radius: 4px;
+  border: none;
+  background-color: rgb(0, 85, 145);
+  color: #f1f5f7;
+}
+.From {
+  border-radius: 6px;
+  margin-right: 12px;
+  font-weight: 500;
+  font-size: small;
+  font-style: italic;
+  margin-left: 1rem;
+  padding: 5px 8px 5px 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  transition: border-color 0.3s ease;
+}
+
+.To {
+  border-radius: 6px;
+  margin-right: 12px;
+  font-weight: 500;
+  font-size: small;
+  font-style: italic;
+  margin-left: 2.25rem;
+  padding: 5px 8px 5px 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  transition: border-color 0.3s ease;
+}
+.From:hover {
+  border-color: #007bff;
+}
+.To:hover {
+  border-color: #007bff;
+}
+.drop {
+  font-weight: 600;
+}
+.selection {
+  border-radius: 6px;
+  margin-right: 12px;
+  font-weight: 500;
+  font-size: small;
+  font-style: italic;
+  margin-left: 0.5rem;
+  padding: 2px 5px 5px 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  transition: border-color 0.3s ease;
+}
+.selection:hover {
+  border-color: blue;
+}
+.Form :hover {
+  border: 1px solid blue;
+}

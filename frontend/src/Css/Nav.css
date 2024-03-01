@@ -1,0 +1,51 @@
+.header {
+  background: linear-gradient(90deg, #f1f5f7, #dce6eb);
+  display: block;
+  color: rgb(0, 85, 145);
+  font-family: LindeDaxLig, Arial, sans-serif;
+}
+
+.main_navbar {
+  display: flex;
+  /* width: 100%; */
+  justify-content: space-around;
+  align-items: center;
+  padding: 1rem 0rem;
+}
+
+.main_navbar .para {
+  /* font-family: LindeDaxLig, Arial, sans-serif; */
+  font-size: 1.2rem;
+  /* color: rgb(0, 85, 145); */
+  /* line-height: 1.2em; */
+}
+
+.media_logo {
+  display: none;
+}
+
+.logo {
+  height: 55px;
+  width: 220px;
+  /* padding: 0px 0px 1rem 0px; */
+  background: transparent;
+}
+@media screen and (max-width: 600px) {
+  .main_navbar .para {
+    font-size: 1rem;
+  }
+
+  .main_navbar .para span:last-of-type {
+    display: block;
+    line-height: 1.25rem;
+  }
+
+  .media_logo {
+    width: 110px;
+    height: 50px;
+    display: inline-block;
+  }
+  .logo {
+    display: none;
+  }
+}

@@ -1,0 +1,83 @@
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 18px 9.5rem;
+  color: white;
+  background: #566787;
+  padding: 0px 20px;
+  border-radius: 7px;
+}
+
+.title h1 {
+  font-size: 17px;
+}
+
+b {
+  font-weight: bolder;
+}
+
+.btns {
+  padding: 5px 5px;
+  margin: 12px 12px;
+}
+
+.add,
+.delete {
+  border-radius: 3px;
+  margin-right: 12px;
+  padding: 3px 12px;
+  border: none;
+}
+
+.add {
+  background-color: #069930;
+  color: rgb(255, 255, 255);
+}
+
+.delete {
+  background-color: #dc3545;
+  color: white;
+}
+
+.team-container {
+  max-width: 100%;
+  /* overflow-x: auto; */
+}
+
+.table-responsive {
+  /* overflow-x: auto; */
+  /* padding: 0px 4rem; */
+  margin-left: 5.6rem;
+}
+
+.teams-table table {
+  /* width: calc(100% - 39rem); Adjust according to your layout */
+  /* Adjust according to your layout */
+  border-collapse: collapse;
+}
+
+/* th,
+  td {
+    padding: 12px;
+    text-align: left;
+  } */
+
+.teams-table th {
+  /* background-color: #f0f0f0; */
+  padding: 0px 4.5rem;
+
+  /* Equally split the th cells */
+}
+.teams-table td {
+  text-align: center;
+  padding: 11px;
+}
+
+.teams-table tr {
+  border-bottom: 1px solid #ddd; /* Add border between rows */
+}
+
+.teams-table tr:last-child {
+  border-bottom: none; /* Remove border from the last row */
+}

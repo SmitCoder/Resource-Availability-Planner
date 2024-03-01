@@ -142,9 +142,12 @@ app.post("/", (req, res) => {
     const request = new sql.Request();
 
     // SQL query based on received dates and search query
-    let query = "SELECT * FROM COSEC WHERE 1=1";
-    if (startDate) query += ` AND FromDate >= '${startDate}'`;
-    if (endDate) query += ` AND ToDate <= '${endDate}'`;
+    let query = `
+      SELECT [team (1)].sapid, [team (1)].Name, [leaves (3)].FromDate, [leaves (3)].ToDate,
+             [leaves (3)].APPLDays, [leaves (3)].LeaveID, [leaves (3)].ModifyFromHalf, [leaves (3)].ModifyToHalf
+      FROM [leaves (3)]
+      RIGHT JOIN [team (1)] ON [team (1)].sapid = [leaves (3)].UserID
+    `;
 
     request.query(query, function (err, recordset) {
       if (err) {
