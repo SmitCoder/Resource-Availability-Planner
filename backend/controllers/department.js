@@ -42,6 +42,37 @@ const getDepts = (req, res) => {
   });
 };
 
+const getDeptsData = (req, res) => {
+  const { deptcode } = req.body;
+  console.log(deptcode);
+  sql.connect(config, function (err) {
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Internal Server Error");
+    }
+
+    const request = new sql.Request();
+
+    request.query(
+      `SELECT Name FROM tblTeam WHERE deptcode = '${deptcode}'`,
+      function (err, recordset) {
+        if (err) {
+          console.log(err);
+          return res.status(500).send("Internal Server Error");
+        }
+
+        // send records as a response
+        res.json(recordset);
+        console.log(recordset);
+        // console.log("data is sended");
+        // res.end();
+        // console.log("connectio ended");
+        //   console.log(recordset);
+      }
+    );
+  });
+};
+
 // const getSelectedOptions = (req, res) => {
 //   const { deptcode, team } = req.body;
 //   console.log(deptcode, team);
@@ -71,4 +102,4 @@ const getDepts = (req, res) => {
 //     });
 //   });
 // };
-module.exports = { getDepts };
+module.exports = { getDepts, getDeptsData };

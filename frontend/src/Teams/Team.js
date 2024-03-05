@@ -61,10 +61,10 @@ const Team = () => {
           </button>
         </div>
       </div>
-      {showForm && (
+      {/* {showForm && (
         <Editing teamId={selectedTeamId} teamdata={data} onClose={closeForm} />
       )}{" "}
-      {/* Pass the teamId to Editing */}
+      Pass the teamId to Editing */}
       <div className="table-responsive">
         <table className="teams-table">
           <thead>
@@ -80,7 +80,7 @@ const Team = () => {
           <tbody>
             {data.map((team) => (
               <tr key={team.id}>
-                <td>{team.id}</td>
+                <td>{team.sapid}</td>
                 <td>
                   {team.deptcode} - {team.Team}
                 </td>

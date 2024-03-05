@@ -18,6 +18,7 @@ const Editing = ({ teamdata, teamId, onClose }) => {
       const response = await axios.get("http://localhost:5000/depts");
       console.log(response.data.recordsets[0]);
       setdepts(response.data.recordsets[0]);
+      console.log(response);
     } catch (error) {
       console.log(error);
     }

@@ -37,7 +37,9 @@ app.use(express.json());
 app.get("/depts", (req, res) => {
   department.getDepts(req, res);
 });
-
+app.post("/deptsdata", (req, res) => {
+  department.getDeptsData(req, res);
+});
 app.use("/", teamsRoutes);
 // app.get("/employee", (req, res) => {
 //   employee.getTableData(req, res);
