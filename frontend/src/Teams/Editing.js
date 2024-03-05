@@ -1,30 +1,27 @@
 import React, { useEffect, useState } from "react";
 import "../Css/Editing.css";
+import axios from "axios";
 
 const Editing = ({ teamdata, teamId, onClose }) => {
   // Destructure props here
   const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({ name: "", description: "" });
-
-  // useEffect(() => {
-  //   setFormData(teamdata);
-  //   // Delay the appearance of the form to allow CSS animations
-  //   const timer = setTimeout(() => {
-  //     setIsVisible(true);
-  //   }, 100);
-
-  //   // Clean up the timer to avoid memory leaks
-  //   return () => clearTimeout(timer);
-  // }, [teamdata]); // Add teamdata to the dependency array
+  const [depts, setdepts] = useState([]);
 
   useEffect(() => {
-    // Find the team data based on teamid
-    // const selectedTeam = teamdata.find((team) => team.id === teamid);
-    // // console.log(selectedTeam);
-    // if (selectedTeam) {
-    //   setFormData(selectedTeam);
+    fetchdepts();
     setIsVisible(true); // Show the form once data is set
   }, [teamdata, teamId]);
+
+  const fetchdepts = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/depts");
+      console.log(response.data.recordsets[0]);
+      setdepts(response.data.recordsets[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -88,7 +85,25 @@ const Editing = ({ teamdata, teamId, onClose }) => {
               onChange={handleChange}
             />
           </div>
-
+          {/* <div>
+            <label className="selection">Employees:</label>
+            {/* <select>
+              <option>A</option>
+              <option>
+                B
+                <select>
+                  <option>B</option>
+                  <option>C</option>
+                </select>
+              </option>
+            </select> */}
+          {/* <select value={depts}>
+              <option value="">Select</option>
+              {depts.map((item, index) => (
+                <option key={index}>{item.deptcode}</option>
+              ))}
+            </select>
+          // </div> */}{" "}
           <button className="submit-btn" type="submit">
             Submit
           </button>

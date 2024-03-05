@@ -23,19 +23,22 @@ const getTableData = (req, res) => {
 
     const request = new sql.Request();
 
-    request.query("select * from tblTeams", function (err, recordset) {
-      if (err) {
-        console.log(err);
-        return res.status(500).send("Internal Server Error");
-      }
+    request.query(
+      "SELECT deptcode, Team  ,  COUNT(*) AS record_count FROM tblTeam WHERE Team <> '' AND deptcode <> ''  GROUP BY deptcode , Team",
+      function (err, recordset) {
+        if (err) {
+          console.log(err);
+          return res.status(500).send("Internal Server Error");
+        }
 
-      // send records as a response
-      res.json(recordset);
-      // console.log("data is sended");
-      // res.end();
-      // console.log("connectio ended");
-      //   console.log(recordset);
-    });
+        // send records as a response
+        res.json(recordset);
+        // console.log("data is sended");
+        // res.end();
+        // console.log("connectio ended");
+        //   console.log(recordset);
+      }
+    );
   });
 };
 const pushTableData = (req, res) => {
@@ -114,7 +117,7 @@ function updateEntry(req, res) {
     }
 
     let request = new sql.Request();
-    const updateQuery = `UPDATE tblTeams SET name='${name}', description='${description}' WHERE id='${teamId}'`;
+    const updateQuery = `UPDATE tblTeams SET name='${name}', description='${description}' WHERE Teamid='${teamId}'`;
 
     request.query(updateQuery, function (err, recordset) {
       if (err) {

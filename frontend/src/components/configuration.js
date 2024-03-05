@@ -13,6 +13,12 @@ export const codes = [
   },
   {
     leavetype: {
+      name: "PH",
+      color: "black",
+    },
+  },
+  {
+    leavetype: {
       name: "CL",
       color: "#CC0A0A",
     },

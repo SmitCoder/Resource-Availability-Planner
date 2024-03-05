@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../Css/Team.css";
+import { useNavigate } from "react-router";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
 import Editing from "../Teams/Editing";
@@ -8,7 +9,7 @@ const Team = () => {
   const [data, setData] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selectedTeamId, setSelectedTeamId] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     fetchTeamsData();
   }, []);
@@ -22,10 +23,11 @@ const Team = () => {
     }
   };
 
-  const openform = (teamId) => {
+  const openform = (deptcode, team) => {
     // setShowForm(!showForm);
     setShowForm(!showForm);
-    setSelectedTeamId(teamId);
+    setSelectedTeamId(deptcode + "-" + team);
+    navigate("/matrix", { state: { deptcode, team } });
     // setShowForm(!showForm);
     // console.log(selectedTeamId);
     // console.log("clicked");
@@ -34,6 +36,9 @@ const Team = () => {
   };
   const closeForm = () => {
     setShowForm(false); // Close the form
+  };
+  const navigatetomatrix = () => {
+    navigate("/matrix");
   };
   return (
     <>
@@ -66,7 +71,8 @@ const Team = () => {
             <tr>
               <th>Id</th>
               <th>Name</th>
-              <th>Description</th>
+              {/* <th>Description</th> */}
+              <th></th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -74,13 +80,14 @@ const Team = () => {
           <tbody>
             {data.map((team) => (
               <tr key={team.id}>
-                <td>{team.Teamid}</td>
-                <td>{team.Name}</td>
-                <td>{team.Description}</td>
+                <td>{team.id}</td>
                 <td>
-                  <button onClick={() => openform(team.id)}>
-                    {" "}
-                    {/* Pass team id to toggleForm */}
+                  {team.deptcode} - {team.Team}
+                </td>
+                {/* <td>{team.Name}</td> */}
+                <td>{team.record_count}</td>
+                <td>
+                  <button onClick={() => openform(team.deptcode, team.Team)}>
                     <EditIcon style={{ height: "20px" }} />
                   </button>
                 </td>

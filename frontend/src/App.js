@@ -6,6 +6,7 @@ import GenerateCalendar from "./components/GenerateCalendar";
 import Team from "./Teams/Team";
 import Employee from "./components/Employee";
 import Matrix from "./components/Matrix";
+import CascadingDropdowns from "./components/CascadingDropdowns";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/employee" element={<Employee />} />
         <Route path="/matrix" element={<Matrix />} />
       </Routes>
+      {/* <CascadingDropdowns /> */}
     </>
   );
 };

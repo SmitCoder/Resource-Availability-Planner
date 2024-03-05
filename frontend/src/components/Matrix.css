@@ -1,0 +1,29 @@
+/* Matrix.css */
+
+.matrix-container {
+  padding: 20px;
+}
+
+.matrix-heading {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.matrix-table th,
+.matrix-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.matrix-table th {
+  background-color: #f2f2f2;
+}
+
+.matrix-table tbody tr:last-child td {
+  border-bottom: none;
+}

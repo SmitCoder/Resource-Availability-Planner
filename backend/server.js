@@ -7,6 +7,7 @@ const employeeRoutes = require("./routes/employeeRoutes");
 const teamsRoutes = require("./routes/teamsRoutes");
 // const main = require("./controllers/main");
 const matrix = require("./controllers/matrix");
+const department = require("./controllers/department");
 
 const config = {
   user: "smit",
@@ -33,6 +34,10 @@ app.use(express.json());
 //   main.pushTableData(req, res);
 // });
 
+app.get("/depts", (req, res) => {
+  department.getDepts(req, res);
+});
+
 app.use("/", teamsRoutes);
 // app.get("/employee", (req, res) => {
 //   employee.getTableData(req, res);
@@ -44,6 +49,9 @@ app.get("/matrix", (req, res) => {
   matrix.getTableData(req, res);
 });
 
+app.post("/selectedOptions", (req, res) => {
+  matrix.getSelectedOptions(req, res);
+});
 // app.post("/teamss", (req, res) => {
 //   main.updateTableData(req, res);
 // });
@@ -142,12 +150,9 @@ app.post("/", (req, res) => {
     const request = new sql.Request();
 
     // SQL query based on received dates and search query
-    let query = `
-      SELECT [team (1)].sapid, [team (1)].Name, [leaves (3)].FromDate, [leaves (3)].ToDate,
-             [leaves (3)].APPLDays, [leaves (3)].LeaveID, [leaves (3)].ModifyFromHalf, [leaves (3)].ModifyToHalf
-      FROM [leaves (3)]
-      RIGHT JOIN [team (1)] ON [team (1)].sapid = [leaves (3)].UserID
-    `;
+    let query = "SELECT * FROM COSEC WHERE 1=1";
+    if (startDate) query += ` AND FromDate >= '${startDate}'`;
+    if (endDate) query += ` AND ToDate <= '${endDate}'`;
 
     request.query(query, function (err, recordset) {
       if (err) {
