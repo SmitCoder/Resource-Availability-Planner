@@ -398,143 +398,163 @@
 
 // export default Matrix;
 
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useLocation } from "react-router";
-import "./Matrix.css";
 
-function Matrix() {
+// import React, { useEffect, useState } from "react";
+// import axios from "axios";
+// import { useLocation } from "react-router";
+// import "./Matrix.css";
+// import Matrix_Edit_Option from "./Matrix_Edit_Option";
+
+// function Matrix() {
+//   const [data, setData] = useState([]);
+//   const location = useLocation();
+//   const state = location.state;
+//   const deptcode = state ? state.deptcode : "";
+//   const team = state ? state.team : "";
+
+//   useEffect(() => {
+//     fetchNamesData(deptcode, team);
+//   }, [deptcode, team]);
+
+//   const fetchNamesData = async (deptcode, team) => {
+//     try {
+//       const response = await axios.post(
+//         "http://localhost:5000/selectedOptions",
+//         {
+//           deptcode,
+//           team,
+//         }
+//       );
+//       setData(response.data.recordsets[0]);
+//     } catch (error) {
+//       console.error("Error fetching data:", error);
+//     }
+//   };
+
+//   // const selectEmp = () =>{
+//   //   alert("clicked")
+//   // }
+
+  
+//   return (
+//     <div className="matrix-container">
+//       <Matrix_Edit_Option />
+//        {/* <div>sidebar content</div> */}
+//       <h1 className="matrix-heading">
+//         {deptcode} - {team}
+//       </h1>
+     
+//       <table className="matrix-table">
+//         <thead>
+//           <tr>
+//             <th>Name</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {data.map((item, index) => (
+//             <tr key={index}>
+//               <td>{item.Name}</td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// }
+
+// export default Matrix;
+
+import React, { useEffect, useState } from "react";
+import "../Css/Team.css";
+import EditIcon from "@mui/icons-material/Edit";
+import axios from "axios";
+import Editing from "../Teams/Editing";
+
+const Matrix = () => {
   const [data, setData] = useState([]);
-  const location = useLocation();
-  const state = location.state;
-  const deptcode = state ? state.deptcode : "";
-  const team = state ? state.team : "";
-  const [sidebar, setSidebar] = useState(false);
-  const [sidebarData, setSidebarData] = useState([]);
-  const [secondSidebarOpen, setSecondSidebarOpen] = useState(false);
-  const [selectedDeptData, setSelectedDeptData] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [selectedTeamId, setSelectedTeamId] = useState(null);
 
   useEffect(() => {
-    fetchNamesData(deptcode, team);
-  }, [deptcode, team, sidebar, secondSidebarOpen]);
+    fetchTeamsData();
+  }, []);
 
-  const fetchNamesData = async (deptcode, team) => {
+  const fetchTeamsData = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/selectedOptions",
-        {
-          deptcode,
-          team,
-        }
-      );
+      const response = await axios.get("http://localhost:5000/matrix");
       setData(response.data.recordsets[0]);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.log(error);
     }
   };
 
-  const toggleSecondSidebar = async (deptcode) => {
-    setSecondSidebarOpen(!secondSidebarOpen);
-    if (!secondSidebarOpen) {
-      try {
-        const response = await axios.post("http://localhost:5000/deptsData", {
-          deptcode,
-        });
-        setSelectedDeptData(response.data.recordsets[0]);
-      } catch (error) {
-        console.error("Error fetching sidebar data:", error);
-      }
-    }
+  const openform = (teamId) => {
+    // setShowForm(!showForm);
+    setShowForm(!showForm);
+    setSelectedTeamId(teamId);
+    // setShowForm(!showForm);
+    // console.log(selectedTeamId);
+    // console.log("clicked");
+
+    // setData(data); // Set the selected team ID
   };
-
-  const toggleFirstSidebar = async () => {
-    setSidebar(!sidebar);
-    if (!sidebar) {
-      try {
-        const response = await axios.get("http://localhost:5000/depts");
-        setSidebarData(response.data.recordsets[0]);
-      } catch (error) {
-        console.error("Error fetching sidebar data:", error);
-      }
-    }
+  const closeForm = () => {
+    setShowForm(false); // Close the form
   };
-
-  console.log(sidebarData);
-
   return (
-    <div className="matrix-container">
-      <h1 className="matrix-heading">
-        {deptcode} - {team}
-      </h1>
-
-      <i className="fa-solid fa-plus" onClick={toggleFirstSidebar}></i>
-
-      <table className="matrix-table">
-        <thead>
-          <tr>
-            <th>Sapid</th>
-            <th>Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr key={index}>
-              <td>{item.sapid}</td>
-              <td>{item.Name}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {sidebar && (
-        <div
-          style={{
-            position: "fixed",
-            top: "13.5%",
-            right: 0,
-            width: "300px",
-            height: "100%",
-            backgroundColor: "#f0f0f0",
-            padding: "20px",
-          }}
-        >
-          <h2>Department Names</h2>
-          {sidebarData.map((item, index) => (
-            <div key={index}>
-              <h4>
-                <i
-                  className="fa-solid fa-angle-left"
-                  onClick={() => toggleSecondSidebar(item.deptcode)}
-                ></i>
-                {item.deptcode}
-              </h4>
-            </div>
-          ))}
-          {secondSidebarOpen && (
-            <div
-              className="second-sidebar"
-              style={{
-                position: "fixed",
-                top: 0,
-                right: "300px", // Adjust this value based on the width of the first sidebar
-                width: "300px",
-                height: "100%",
-                backgroundColor: "#f0f0f0",
-                padding: "20px",
-              }}
-            >
-              <h4>Members</h4>
-              {selectedDeptData.map((item, index) => (
-                <div key={index}>
-                  <h4>{item.Name}</h4>
-                </div>
-              ))}
-            </div>
-          )}
+    <>
+      <div className="header-container">
+        <div className="title">
+          <h1>
+            Manage <b>Matrix</b>
+          </h1>
         </div>
-      )}
-    </div>
+        <div className="btns">
+          <button
+            color="success"
+            className="add"
+            onClick={() => openform(null)}
+          >
+            Add Team
+          </button>
+          <button color="primary" className="delete">
+            Delete
+          </button>
+        </div>
+      </div>
+      {showForm && (
+        <Editing teamId={selectedTeamId} teamdata={data} onClose={closeForm} />
+      )}{" "}
+      {/* Pass the teamId to Editing */}
+      <div className="table-responsive">
+        <table className="teams-table">
+          <thead>
+            <tr>
+              <th>Team_Id</th>
+              <th>Employee_id</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {data.map((team) => (
+              <tr key={team.id}>
+                <td>{team.Team_id}</td>
+                <td>{team.Employee_id}</td>
+                {/* <td>{team.Description}</td> */}
+                <td>
+                  <button onClick={() => openform(team.id)}>
+                    {" "}
+                    {/* Pass team id to toggleForm */}
+                    <EditIcon style={{ height: "20px" }} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
-}
+};
 
 export default Matrix;

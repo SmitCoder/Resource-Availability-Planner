@@ -10,10 +10,10 @@ const matrix = require("./controllers/matrix");
 const department = require("./controllers/department");
 
 const config = {
-  user: "smit",
-  password: "hello123",
+  user: "SA",
+  password: "091002",
   server: "localhost\\SQLEXPRESS",
-  database: "Students",
+  database: "leaves",
   port: "5000",
   options: {
     trustedConnection: true,
@@ -93,7 +93,7 @@ app.get("/", (req, res) => {
 
     const request = new sql.Request();
 
-    request.query("select * from Sheet2$ ", function (err, recordset) {
+    request.query("select * from Leaves$ ", function (err, recordset) {
       if (err) {
         console.log(err);
         return res.status(500).send("Internal Server Error");
@@ -114,7 +114,7 @@ app.post("/COSEC", (req, res) => {
 
     const request = new sql.Request();
 
-    request.query("select * from tblExtLeaves", function (err, recordset) {
+    request.query("select * from Leaves$", function (err, recordset) {
       if (err) {
         console.log(err);
         return res.status(500).send("Internal Server Error");
@@ -152,7 +152,7 @@ app.post("/", (req, res) => {
     const request = new sql.Request();
 
     // SQL query based on received dates and search query
-    let query = "SELECT * FROM COSEC WHERE 1=1";
+    let query = "SELECT * FROM Leaves$ WHERE 1=1";
     if (startDate) query += ` AND FromDate >= '${startDate}'`;
     if (endDate) query += ` AND ToDate <= '${endDate}'`;
 
@@ -186,7 +186,7 @@ app.post("/submitFormData", async (req, res) => {
     }
 
     let request = new sql.Request();
-    const insertQuery = `INSERT INTO tblExtLeaves (Name, FromDate, ToDate, LeaveID) VALUES ('${name}', '${fromDate}', '${toDate}', '${leaveType}')`;
+    const insertQuery = `INSERT INTO leaves (Name, FromDate, ToDate, LeaveID) VALUES ('${name}', '${fromDate}', '${toDate}', '${leaveType}')`;
 
     request.query(insertQuery, function (err, recordset) {
       if (err) {

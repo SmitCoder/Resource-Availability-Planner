@@ -4,9 +4,10 @@
   align-items: center;
   margin: 18px 9.5rem;
   color: white;
-  background: #566787;
+  /* background: #566787; */
   padding: 0px 20px;
   border-radius: 7px;
+  background-color: rgb(0, 85, 145);
 }
 
 .title h1 {
@@ -31,14 +32,14 @@ b {
 }
 
 .add {
-  background-color: #069930;
-  color: rgb(255, 255, 255);
+  background-color: #dce6eb;
+  color: rgb(0, 85, 145);
 }
 
-.delete {
+/* .delete {
   background-color: #dc3545;
   color: white;
-}
+} */
 
 .team-container {
   max-width: 100%;
