@@ -28,6 +28,7 @@ const Team = () => {
     setShowForm(!showForm);
     setSelectedTeamId(deptcode + "-" + team);
     navigate("/matrix", { state: { deptcode, team } });
+
     // setShowForm(!showForm);
     // console.log(selectedTeamId);
     // console.log("clicked");

@@ -44,7 +44,10 @@ app.use("/", teamsRoutes);
 // app.get("/employee", (req, res) => {
 //   employee.getTableData(req, res);
 // });
-
+app.post("/sendMembers", (req, res) => {
+  const { selectedMember } = req.body;
+  console.log(selectedMember);
+});
 app.use("/", employeeRoutes);
 
 app.get("/matrix", (req, res) => {

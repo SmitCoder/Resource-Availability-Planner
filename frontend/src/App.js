@@ -21,7 +21,7 @@ const App = () => {
         <Route path="/matrix" element={<Matrix />} />
       </Routes>
       {/* <CascadingDropdowns /> */}
-      <React_select />
+      {/* <React_select /> */}
     </>
   );
 };

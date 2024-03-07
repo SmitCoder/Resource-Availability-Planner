@@ -19,7 +19,7 @@ function Matrix() {
 
   useEffect(() => {
     fetchNamesData(deptcode, team);
-  }, [deptcode, team, sidebar, secondSidebarOpen]);
+  }, [deptcode, team, sidebar, secondSidebarOpen, selectedMember]);
 
   const fetchNamesData = async (deptcode, team) => {
     try {
@@ -37,7 +37,7 @@ function Matrix() {
       console.error("Error fetching data:", error);
     }
   };
-  const handleSelectChange = async (value) => {
+  const handleSelectChange = async (value, team) => {
     // Assuming you have a backend endpoint to fetch data
     console.log(value);
     setSelectedMember(value);
@@ -61,18 +61,29 @@ function Matrix() {
       }
     }
   };
-  const handleCheckboxChange = (item) => {
-    // if (selectedDeptData.includes(item)) {
-    //   setSelectedMember(
-    //     selectedDeptData.filter((selectedItem) => selectedItem !== item)
-    //   );
-    // } else {
-    setSelectedMember(item);
-    // }
-    console.log(selectedMember);
+  const sendSelectedMembers = async () => {
+    console.log("button clicked");
+    try {
+      // Extract IDs of selected members
+      const selectedMemberIDs = selectedDeptData.map((member) => member.ID);
+      // Send selected member IDs to the backend
+      await axios.post("http://localhost:5000/sendMembers", {
+        selectedMember,
+      });
+      console.log(selectedMember);
+      console.log("Selected members sent to the backend successfully.");
+    } catch (error) {
+      console.error("Error sending selected members:", error);
+    }
   };
+  const handleCheckboxChange = (item) => {
+    setSelectedMember([...selectedMember, item]);
+    // setSelectedMember.push(item);
+  };
+  console.log(selectedMember);
 
   // console.log(selectedDeptData);
+
   const toggleFirstSidebar = async () => {
     setSidebar(!sidebar);
     if (!sidebar) {
@@ -88,19 +99,6 @@ function Matrix() {
       } catch (error) {
         console.error("Error fetching sidebar data:", error);
       }
-    }
-  };
-  const sendSelectedMembers = async () => {
-    try {
-      // Extract IDs of selected members
-      const selectedMemberIDs = selectedDeptData.map((member) => member.ID);
-      // Send selected member IDs to the backend
-      await axios.post("http://localhost:5000/sendMembers", {
-        memberIDs: selectedMemberIDs,
-      });
-      console.log("Selected members sent to the backend successfully.");
-    } catch (error) {
-      console.error("Error sending selected members:", error);
     }
   };
 
@@ -149,13 +147,15 @@ function Matrix() {
             <div key={index}>
               <h4>
                 <i
-                  className="fa-solid fa-angle-left"
+                  className="fa-solid fa-angle-down"
                   onClick={() => toggleSecondSidebar(item.deptcode)}
-                ></i>
-                {item.deptcode}
+                >
+                  {item.deptcode}
+                </i>
               </h4>
             </div>
           ))}
+          <button onClick={sendSelectedMembers}>Send Data</button>
 
           {secondSidebarOpen && (
             <div
@@ -185,7 +185,7 @@ function Matrix() {
                 }))}
                 onChange={handleCheckboxChange}
                 closeMenuOnSelect={false}
-                display="chip"
+                selectAllText="Select"
               ></Select>
             </div>
           )}
