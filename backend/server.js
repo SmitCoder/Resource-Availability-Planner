@@ -37,7 +37,7 @@ app.use(express.json());
 app.get("/depts", (req, res) => {
   department.getDepts(req, res);
 });
-app.post("/deptsdata", (req, res) => {
+app.post("/deptsData", (req, res) => {
   department.getDeptsData(req, res);
 });
 app.use("/", teamsRoutes);
@@ -49,6 +49,26 @@ app.use("/", employeeRoutes);
 
 app.get("/matrix", (req, res) => {
   matrix.getTableData(req, res);
+});
+
+app.get("/select", (req, res) => {
+  sql.connect(config, function (err) {
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Internal Server Error");
+    }
+
+    const request = new sql.Request();
+
+    request.query("select * from tblTeam ", function (err, recordset) {
+      if (err) {
+        console.log(err);
+        return res.status(500).send("Internal Server Error");
+      }
+
+      res.json(recordset);
+    });
+  });
 });
 
 app.post("/selectedOptions", (req, res) => {

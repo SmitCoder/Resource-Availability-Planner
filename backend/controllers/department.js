@@ -44,17 +44,17 @@ const getDepts = (req, res) => {
 
 const getDeptsData = (req, res) => {
   const { deptcode } = req.body;
-  console.log(deptcode);
+  console.log("Department " + deptcode);
   sql.connect(config, function (err) {
     if (err) {
       console.log(err);
       return res.status(500).send("Internal Server Error");
     }
-
     const request = new sql.Request();
+    request.input("deptcode", sql.VarChar, deptcode);
 
     request.query(
-      `SELECT Name FROM tblTeam WHERE deptcode = '${deptcode}'`,
+      `SELECT Name FROM tblTeam WHERE deptcode = @deptcode`,
       function (err, recordset) {
         if (err) {
           console.log(err);
@@ -63,7 +63,7 @@ const getDeptsData = (req, res) => {
 
         // send records as a response
         res.json(recordset);
-        console.log(recordset);
+        // console.log(recordset);
         // console.log("data is sended");
         // res.end();
         // console.log("connectio ended");

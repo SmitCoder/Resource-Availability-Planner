@@ -16,7 +16,7 @@ const Team = () => {
 
   const fetchTeamsData = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/teams");
+      const response = await axios.post("http://localhost:5000/teams");
       setData(response.data.recordsets[0]);
     } catch (error) {
       console.log(error);
@@ -80,7 +80,7 @@ const Team = () => {
           <tbody>
             {data.map((team) => (
               <tr key={team.id}>
-                <td>{team.sapid}</td>
+                <td>{team.ID}</td>
                 <td>
                   {team.deptcode} - {team.Team}
                 </td>

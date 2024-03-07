@@ -28,10 +28,12 @@ function GenerateCalendar() {
   const [asc, setAsc] = useState(true);
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [dropdownData, setDropdownData] = useState([]);
 
   useEffect(() => {
     fetchEmployees();
-  }, [startDate, endDate, searchQuery, input, employees]);
+  }, [startDate, endDate, searchQuery, input]);
 
   useEffect(() => {
     document.addEventListener("keydown", (e) => detectKeyDown(e, closeModal));
@@ -122,6 +124,75 @@ function GenerateCalendar() {
       setIsOpen(false);
     } catch (error) {
       console.error("Error submitting form data:", error);
+    }
+  };
+
+  // const handleDropdownChange = async (event) => {
+  //   setSelectedOption(event.target.value);
+  //   try {
+  //     const response = await axios.get("http://localhost:5000/teams");
+  //     setDropdownData(response.data.recordesets[0]);
+  //     console.log(response.data.recordesets[0]); // Assuming the response is an array of dropdown options
+  //   } catch (error) {
+  //     console.error("Error fetching dropdown data:", error);
+  //   }
+  //   // Handle dropdown change and fetched data if needed
+  // };
+
+  const handleDropdownChange = async (e) => {
+    console.log("Getting into function");
+    // const selectedValue = e.target.value;
+    // setSelectedOption(selectedValue);
+    // console.log(selectedValue);
+
+    // const [deptcode, team] = selectedValue.split("-");
+    // console.log(deptcode, team);
+    try {
+      const response = await axios.post("http://localhost:5000/teams", {
+        // deptcode,
+        // team,
+        // selectedValue,
+        // deptcode,
+        // team,
+      });
+      // console.log("Dropdown data response:", response.data); // Log response data
+      setDropdownData(response.data.recordsets[0]);
+
+      // const response2 = await axios.post("http://localhost:5000/DropDownData");
+      // console.log("Dropdown data response:", response2.data);
+
+      // if (Array.isArray(response2.data)) {
+      //   setEmployees(response2.data);
+      // } else {
+      //   console.error("Invalid response for employees data:", response2.data);
+      // }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const handleDropdownData = async (e) => {
+    console.log("Getting into function");
+    const selectedValue = e.target.value;
+    setSelectedOption(selectedValue);
+    console.log(selectedValue);
+
+    const [deptcode, team] = selectedValue.split("-");
+    console.log(deptcode, team);
+    try {
+      const response2 = await axios.post("http://localhost:5000/DropDownData", {
+        deptcode,
+        team,
+      });
+      console.log("Dropdown data response:", response2.data);
+
+      if (Array.isArray(response2.data)) {
+        setEmployees(response2.data);
+      } else {
+        console.error("Invalid response for employees data:", response2.data);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
 
@@ -314,6 +385,21 @@ function GenerateCalendar() {
                     handleMonthChangeto(e.target.value, setEndDate)
                   } // Pass setEndDate
                 />
+              </div>
+              <div>
+                <select
+                  // value={selectedOption}
+                  onClick={(e) => handleDropdownChange(e)}
+                  placeholder="select it"
+                  onChange={(e) => handleDropdownData(e)}
+                >
+                  <option value="">Select option</option>
+                  {dropdownData.map((item, index) => (
+                    <option key={index} value={`${item.deptcode}-${item.Team}`}>
+                      {item.deptcode} - {item.Team}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 

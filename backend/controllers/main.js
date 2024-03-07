@@ -13,6 +13,32 @@ const config = {
   },
 };
 let pool;
+const groupData = (data) => {
+  const grouped = {};
+  data.recordset.forEach((record) => {
+    const name = record.Name;
+    const id = record.Personid;
+    // console.log("Processing record with Name:", name);
+
+    if (!grouped[name]) {
+      grouped[name] = {
+        name: name,
+        id: id,
+        dates: [],
+      };
+    }
+    grouped[name].dates.push({
+      fromDate: record.FromDate,
+      toDate: record.ToDate,
+      leavetype: record.LeaveID,
+      appldays: record.APPLDays,
+      modifyfrom: record.ModifyFromHalf,
+      modifyto: record.ModifyToHalf,
+    });
+  });
+
+  return Object.values(grouped);
+};
 
 const getTableData = (req, res) => {
   sql.connect(config, function (err) {
@@ -24,7 +50,7 @@ const getTableData = (req, res) => {
     const request = new sql.Request();
 
     request.query(
-      "SELECT deptcode, Team  ,  COUNT(*) AS record_count FROM tblTeam WHERE Team <> '' AND deptcode <> ''  GROUP BY deptcode , Team",
+      "SELECT deptcode, Team , COUNT(*) AS record_count FROM tblTeam WHERE Team <> '' AND deptcode <> ''  GROUP BY deptcode , Team",
       function (err, recordset) {
         if (err) {
           console.log(err);
@@ -132,148 +158,85 @@ function updateEntry(req, res) {
   // sql.close();
   console.log("connection ended");
 }
-// async function updateEntry(req, res) {
-//   const { teamId, name, description } = req.body;
 
-//   try {
-//     // Create a connection pool to manage connections efficiently
-//     pool = await new sql.ConnectionPool(config); // Ensure `config` contains your database connection details
+// const getData = (req, res) => {
+//   const { deptcode, team } = req.body;
 
-//     // Start a transaction for atomicity and error handling
-//     const transaction = await pool.beginTransaction();
-
-//     try {
-//       // Execute the update query within the transaction
-//       await transaction
-//         .request()
-//         .query(
-//           `UPDATE Teams SET name = @name, description = @description WHERE id = @teamId`,
-//           {
-//             name,
-//             description,
-//             teamId,
-//           }
-//         );
-
-//       // Commit the transaction if successful
-//       await transaction.commit();
-//       res.json({ message: "Entry updated successfully" });
-//     } catch (err) {
-//       // Rollback the transaction if an error occurs
-//       await transaction.rollback();
-//       console.error("Error updating entry:", err);
-//       return res.status(500).json({ error: "Database error" });
-//     }
-//   } catch (err) {
-//     console.error("Error connecting to database:", err);
-//     return res.status(500).json({ error: "Database connection error" });
-//   } finally {
-//     // Ensure the pool is closed even if errors occur
-//     if (pool) {
-//       await pool.close();
-//       console.log("Connection pool closed");
-//     }
-//   }
-// }
-
-// async function updateEntry(req, res) {
-//   const { teamId, name, description } = req.body;
-
-//   try {
-//     // Create a connection pool outside the function if it hasn't been created yet
-//     if (!pool) {
-//       pool = await new sql.ConnectionPool(config); // Ensure `config` contains your database connection details
-//       console.log("Connection pool created");
+//   console.log(deptcode, team);
+//   sql.connect(config, function (err) {
+//     if (err) {
+//       console.log(err);
+//       return res.status(500).send("Internal Server Error");
 //     }
 
-//     // Acquire a connection from the pool
-//     const connection = await pool.request().connection;
+//     const request = new sql.Request();
 
-//     try {
-//       // Begin a transaction using the connection
-//       const transaction = await connection.beginTransaction();
+//     request.query(
+//       ` select  (COSEC.Name) , tblTeam.deptcode , COSEC.FromDate,
+//      COSEC.ToDate , COSEC.LeaveID , COSEC.APPLDays , COSEC.ModifyFromHalf,
+//      COSEC.ModifyToHalf
+//      from tblTeam
+//      left join
+//      COSEC on tblTeam.ID = COSEC.ID
+//      where deptcode = ${deptcode} and Team = ${team}`,
+//       function (err, recordset) {
+//         if (err) {
+//           console.log(err);
+//           return res.status(500).send("Internal Server Error");
+//         }
 
-//       try {
-//         // Execute the update query within the transaction
-//         await transaction
-//           .request()
-//           .query(
-//             `UPDATE Teams SET name = @name, description = @description WHERE id = @teamId`,
-//             {
-//               name,
-//               description,
-//               teamId,
-//             }
-//           );
+//         const groupedData = groupData(recordset);
+//         // send records as a response
+//         res.json(groupedData);
+//         // console.log(groupedData);
 
-//         // Commit the transaction if successful
-//         await transaction.commit();
-//         res.json({ message: "Entry updated successfully" });
-//       } catch (err) {
-//         // Rollback the transaction if an error occurs
-//         await transaction.rollback();
-//         console.error("Error updating entry:", err);
-//         return res.status(500).json({ error: "Database error" });
+//         // console.log("data is sended");
+//         // res.end();
+//         // console.log("connectio ended");
+//         //   console.log(recordset);
 //       }
-//     } finally {
-//       // Release the connection back to the pool
-//       await connection.release();
-//     }
-//   } catch (err) {
-//     console.error("Error connecting to database:", err);
-//     return res.status(500).json({ error: "Database connection error" });
-//   } finally {
-//     // Ensure the pool is closed even if errors occur
-//     if (pool) {
-//       await pool.close();
-//       console.log("Connection pool closed");
-//     }
-//   }
-// }
+//     );
+//   });
+// };
 
-// async function updateEntry(req, res) {
-//   const { teamId, name, description } = req.body;
+const getData = (req, res) => {
+  const { deptcode, team } = req.body;
 
-//   try {
-//     // Create a connection pool outside the function if it hasn't been created yet
-//     if (!pool) {
-//       pool = await new sql.ConnectionPool(config); // Ensure `config` contains your database connection details
-//       console.log("Connection pool created");
-//     }
+  console.log(deptcode, team);
+  sql.connect(config, function (err) {
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Internal Server Error");
+    }
 
-//     // Acquire a connection from the pool
-//     const connection = await pool.request().connection;
+    const request = new sql.Request();
 
-//     if (!connection) {
-//       // Handle the case where acquiring a connection fails
-//       console.error("Failed to acquire a connection from the pool");
-//       return res.status(500).json({ error: "Database connection error" });
-//     }
+    request.input("deptcode", sql.VarChar, deptcode);
+    request.input("team", sql.VarChar, team);
 
-//     try {
-//       // Begin a transaction using the connection
-//       const transaction = await connection.beginTransaction();
+    request.query(
+      `SELECT tblTeam.Name ,tblTeam.deptcode, COSEC.FromDate,
+       COSEC.ToDate, COSEC.LeaveID, COSEC.APPLDays, COSEC.ModifyFromHalf,
+       COSEC.ModifyToHalf
+       FROM tblTeam 
+       LEFT JOIN COSEC ON tblTeam.ID = COSEC.ID 
+       WHERE deptcode = @deptcode AND Team = @team`,
+      function (err, recordset) {
+        if (err) {
+          console.log(err);
+          return res.status(500).send("Internal Server Error");
+        }
 
-//       // ... rest of the code within the transaction remains the same ...
-//     } finally {
-//       // Release the connection back to the pool (if acquired successfully)
-//       if (connection) {
-//         await connection.release();
-//       }
-//     }
-//   } catch (err) {
-//     console.error("Error connecting to database:", err);
-//     return res.status(500).json({ error: "Database connection error" });
-//   } finally {
-//     // Ensure the pool is closed even if errors occur
-//     if (pool) {
-//       await pool.close();
-//       console.log("Connection pool closed");
-//     }
-//   }
-// }
+        const groupedData = groupData(recordset);
+        res.json(groupedData);
+      }
+    );
+  });
+};
+
 module.exports = {
   getTableData,
   pushTableData,
   updateTableData,
+  getData,
 };

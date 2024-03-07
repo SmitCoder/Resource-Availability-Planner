@@ -2,10 +2,12 @@ const express = require("express");
 const router = express.Router();
 const main = require("../controllers/main");
 
-router.get("/teams", main.getTableData);
-// router.post("/teams", main.pushTableData);
+//for  dropdown selection and showing in team page
+router.post("/teams", main.getTableData);
 
 router.post("/teamss", main.updateTableData);
+
+router.post("/DropDownData", main.getData);
 
 // router.post("/", employeeController.getAllEmployees);
 
