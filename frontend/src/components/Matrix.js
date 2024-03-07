@@ -517,9 +517,9 @@ const Matrix = () => {
           >
             Add Team
           </button>
-          <button color="primary" className="delete">
+          {/* <button color="primary" className="delete">
             Delete
-          </button>
+          </button> */}
         </div>
       </div>
       {showForm && (

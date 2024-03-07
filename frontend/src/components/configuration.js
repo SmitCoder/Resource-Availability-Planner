@@ -14,7 +14,7 @@ export const codes = [
   {
     leavetype: {
       name: "PH",
-      color: "black",
+      color: "#dddada",
     },
   },
   {
