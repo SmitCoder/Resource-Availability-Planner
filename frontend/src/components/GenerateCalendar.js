@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
 import moment from "moment";
 import "../Css/GenerateCalendar.css";
-// import "../Css/F.css";
 import pallate from "../Images/color-pallate.jpeg";
-
 import axios from "axios";
 import { HD, codes } from "./configuration";
 import "../Css/PopUpForm.css";
 import PopUpForm from "./PopUpForm";
-// import "../Css/GenerateCalendar.css";
 import {
   handleMonthChangefrom,
   handleMonthChangeto,
@@ -33,7 +30,7 @@ function GenerateCalendar() {
 
   useEffect(() => {
     fetchEmployees();
-  }, [startDate, endDate, searchQuery, input]);
+  }, [startDate, endDate, searchQuery, input, icon]);
 
   useEffect(() => {
     document.addEventListener("keydown", (e) => detectKeyDown(e, closeModal));
@@ -196,11 +193,22 @@ function GenerateCalendar() {
     }
   };
 
+  // const handlechangeorder = () => {
+  //   // toggleSortingOrder();
+
+  //   console.log("toggled entered");
+  //   toggleSortingOrder(setAsc, setIcon, icon); // Toggle the sorting order
+  //   setIcon((prevIcon) => (prevIcon === "up" ? "down" : "up"));
+  // };
   const handlechangeorder = () => {
-    // toggleSortingOrder();
-    toggleSortingOrder(setAsc, setIcon, icon); // Toggle the sorting order
+    console.log("clicked");
+    // setEmployees([]);
+    setAsc((prevAsc) => !prevAsc);
     setIcon((prevIcon) => (prevIcon === "up" ? "down" : "up"));
+    // toggleSortingOrder(setAsc, setIcon, icon); // Pass setAsc as the first argument
+    // setIcon((prevIcon) => (prevIcon === "up" ? "down" : "up"));
   };
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
@@ -366,7 +374,7 @@ function GenerateCalendar() {
                   value={startDate.format("YYYY-MM")}
                   onChange={(e) =>
                     handleMonthChangefrom(e.target.value, setStartDate)
-                  } // Pass setStartDate
+                  }
                 />
               </div>
               <span className="dash">

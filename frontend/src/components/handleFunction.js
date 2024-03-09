@@ -18,6 +18,7 @@ export const detectKeyDown = (e, closeModal) => {
 export const toggleSortingOrder = (setAsc, setIcon, icon) => {
   setAsc((prevAsc) => !prevAsc);
   setIcon((prevIcon) => (prevIcon === "up" ? "down" : "up"));
+  // window.location.reload();
 };
 
 export const handleSearchChange = (e, setSearchQuery) => {
