@@ -1,17 +1,48 @@
 /* Matrix.css */
+.first-sidebar{
+    position: fixed;
+    top: 14.5%;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background: linear-gradient(90deg, #dce6eb,#f1f5f7);
+    padding: 5px 20px;
+    color:rgb(55, 104, 137) ;
 
-.matrix-container {
-  padding: 20px;
 }
-
+.first-sidebar .i{
+  position: fixed;
+  top: 6rem;
+  right: 1.3rem;
+}
+.matrix-container {
+  padding: 1rem;
+}
+.matrix-container i {
+  color: red;
+}
+.matrix-position{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 .matrix-heading {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
   /* position: relative; */
 }
-
+.second-sidebar i, .first-sidebar i{
+  color: rgb(55, 104, 137);
+  /* position:absolute;
+  top: 8.5rem;
+  right: 10rem; */
+}
+.table_position{
+  display: flex;
+  justify-content: center;
+}
 .matrix-table {
-  width: 100%;
+  width: 80%;
   border-collapse: collapse;
 }
 
@@ -28,7 +59,9 @@
 .matrix-table tbody tr:last-child td {
   border-bottom: none;
 }
-
+.matrix-table tr td{
+  text-align: center;
+}
 .btn{
  
 }
