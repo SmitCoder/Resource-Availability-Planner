@@ -154,15 +154,6 @@ function GenerateCalendar() {
       });
       // console.log("Dropdown data response:", response.data); // Log response data
       setDropdownData(response.data.recordsets[0]);
-
-      // const response2 = await axios.post("http://localhost:5000/DropDownData");
-      // console.log("Dropdown data response:", response2.data);
-
-      // if (Array.isArray(response2.data)) {
-      //   setEmployees(response2.data);
-      // } else {
-      //   console.error("Invalid response for employees data:", response2.data);
-      // }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -183,30 +174,20 @@ function GenerateCalendar() {
       });
       console.log("Dropdown data response:", response2.data);
 
-      if (Array.isArray(response2.data)) {
+      // if (Array.isArray(response2.data)) {
         setEmployees(response2.data);
-      } else {
-        console.error("Invalid response for employees data:", response2.data);
-      }
+      // } else {
+        // console.error("Invalid response for employees data:", response2.data);
+      // }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
-  // const handlechangeorder = () => {
-  //   // toggleSortingOrder();
-
-  //   console.log("toggled entered");
-  //   toggleSortingOrder(setAsc, setIcon, icon); // Toggle the sorting order
-  //   setIcon((prevIcon) => (prevIcon === "up" ? "down" : "up"));
-  // };
   const handlechangeorder = () => {
     console.log("clicked");
-    // setEmployees([]);
     setAsc((prevAsc) => !prevAsc);
     setIcon((prevIcon) => (prevIcon === "up" ? "down" : "up"));
-    // toggleSortingOrder(setAsc, setIcon, icon); // Pass setAsc as the first argument
-    // setIcon((prevIcon) => (prevIcon === "up" ? "down" : "up"));
   };
 
   const handleSearchChange = (e) => {
@@ -404,7 +385,8 @@ function GenerateCalendar() {
                   <option value="">Select option</option>
                   {dropdownData.map((item, index) => (
                     <option key={index} value={`${item.deptcode}-${item.Team}`}>
-                      {item.deptcode} - {item.Team}
+                  
+                      {item.Name} 
                     </option>
                   ))}
                 </select>

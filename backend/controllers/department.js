@@ -23,7 +23,7 @@ const getDepts = (req, res) => {
     const request = new sql.Request();
 
     request.query(
-      "select distinct(deptcode) from tblTeam",
+      "select distinct(deptcode) from tblEmployees",
       function (err, recordset) {
         if (err) {
           console.log(err);
@@ -54,7 +54,7 @@ const getDeptsData = (req, res) => {
     request.input("deptcode", sql.VarChar, deptcode);
 
     request.query(
-      `SELECT Name FROM tblTeam WHERE deptcode = @deptcode`,
+      `SELECT Name , ID FROM tblEmployees WHERE deptcode = @deptcode`,
       function (err, recordset) {
         if (err) {
           console.log(err);

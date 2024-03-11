@@ -8,7 +8,8 @@ const teamsRoutes = require("./routes/teamsRoutes");
 // const main = require("./controllers/main");
 const matrix = require("./controllers/matrix");
 const department = require("./controllers/department");
-
+const departmentRoutes = require("./routes/departmentRoutes")
+const matrixRoutes = require("./routes/matrixRoutes")
 const config = {
   user: "smit",
   password: "hello123",
@@ -26,33 +27,65 @@ const config = {
 app.use(cors());
 app.use(express.json());
 
-// app.get("/teams", (req, res) => {
-//   main.getTableData(req, res);
-// });
-
-// app.post("/teams", (req, res) => {
-//   main.pushTableData(req, res);
-// });
-
-app.get("/depts", (req, res) => {
-  department.getDepts(req, res);
-});
-app.post("/deptsData", (req, res) => {
-  department.getDeptsData(req, res);
-});
+app.use( "/", matrixRoutes);
+app.use("/" , departmentRoutes)
 app.use("/", teamsRoutes);
-// app.get("/employee", (req, res) => {
-//   employee.getTableData(req, res);
-// });
+
 app.post("/sendMembers", (req, res) => {
-  const { selectedMember } = req.body;
+  const { selectedMember , teamid , team_Name } = req.body;
   console.log(selectedMember);
+  console.log(teamid , team_Name);
+  const data = selectedMember
+   
+  // Flatten the array of arrays
+  const flattenedArray = data.flat();
+  
+  // Filter out duplicate objects based on their value property
+  const uniqueArray = flattenedArray.filter((obj, index, self) =>
+    index === self.findIndex((o) => o.value === obj.value)
+  );
+  
+  console.log(uniqueArray);
+  const insertQuery = "INSERT INTO Mapping (Team_id, Employee_id) VALUES (@teamid, @value)";
+  const values = uniqueArray.map(({  value }) => [ teamid ,value]);
+  sql.connect(config, function (err) {
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Internal Server Error");
+    }
+
+    const request = new sql.Request();
+
+    // uniqueArray.forEach(({ values }) => {
+    //   request.input("teamid", sql.Int, teamid);
+    //   request.input("value", sql.NVarChar, value);
+    //   request.query(insertQuery,[values], function (err, recordset) {
+    //     if (err) {
+    //       console.log(err);
+    //       return res.status(500).send("Internal Server Error");
+    //     }
+    //   });
+      
+    values.forEach(([teamid, value]) => {
+      request.input("teamid", sql.Int, teamid);
+      request.input("value", sql.NVarChar, value);
+      request.query(insertQuery, function (err, recordset) {
+        if (err) {
+          console.log(err);
+          return res.status(500).send("Internal Server Error");
+        }
+      });
+
+    console.log("Data inserted into the database:", uniqueArray);
+    // res.status(200).json({ message: "Data inserted successfully." });
+      // res.json(recordset);
+    });
+  });
+  
 });
 app.use("/", employeeRoutes);
 
-app.get("/matrix", (req, res) => {
-  matrix.getTableData(req, res);
-});
+
 
 app.get("/select", (req, res) => {
   sql.connect(config, function (err) {
@@ -74,12 +107,7 @@ app.get("/select", (req, res) => {
   });
 });
 
-app.post("/selectedOptions", (req, res) => {
-  matrix.getSelectedOptions(req, res);
-});
-// app.post("/teamss", (req, res) => {
-//   main.updateTableData(req, res);
-// });
+
 const groupData = (data) => {
   const grouped = {};
   data.recordset.forEach((record) => {

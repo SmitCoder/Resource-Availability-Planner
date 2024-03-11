@@ -23,18 +23,18 @@ const Team = () => {
     }
   };
 
-  const openform = (deptcode, team) => {
-    // setShowForm(!showForm);
-    setShowForm(!showForm);
-    setSelectedTeamId(deptcode + "-" + team);
-    navigate("/matrix", { state: { deptcode, team } });
+  const openform = ( teamid , team_Name) => {
 
-    // setShowForm(!showForm);
-    // console.log(selectedTeamId);
-    // console.log("clicked");
-
-    // setData(data); // Set the selected team ID
+  // setShowForm(!showForm);
+    navigate("/matrix", { state: { teamid , team_Name } });
+    console.log(teamid);
+    console.log(team_Name);
   };
+
+  const openEditing = ()=>{
+console.log("clicked");
+setShowForm(!showForm)
+  }
   const closeForm = () => {
     setShowForm(false); // Close the form
   };
@@ -53,7 +53,7 @@ const Team = () => {
           <button
             color="success"
             className="add"
-            onClick={() => openform(null)}
+            onClick={() => openEditing()}
           >
             Add Team
           </button>
@@ -62,10 +62,10 @@ const Team = () => {
           </button>
         </div>
       </div>
-      {/* {showForm && (
+      {showForm && (
         <Editing teamId={selectedTeamId} teamdata={data} onClose={closeForm} />
       )}{" "}
-      Pass the teamId to Editing */}
+
       <div className="table-responsive">
         <table className="teams-table">
           <thead>
@@ -73,7 +73,7 @@ const Team = () => {
               <th>Id</th>
               <th>Name</th>
               {/* <th>Description</th> */}
-              <th></th>
+              <th>D</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -81,14 +81,14 @@ const Team = () => {
           <tbody>
             {data.map((team) => (
               <tr key={team.id}>
-                <td>{team.ID}</td>
+                <td>{team.Team_id}</td>
                 <td>
-                  {team.deptcode} - {team.Team}
+                  {team.Name}
                 </td>
                 {/* <td>{team.Name}</td> */}
-                <td>{team.record_count}</td>
+                <td>{team.Description}</td>
                 <td>
-                  <button onClick={() => openform(team.deptcode, team.Team)}>
+                  <button onClick={() => openform( team.Team_id , team.Name)}>
                     <EditIcon style={{ height: "20px" }} />
                   </button>
                 </td>

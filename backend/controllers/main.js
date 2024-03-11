@@ -48,9 +48,10 @@ const getTableData = (req, res) => {
     }
 
     const request = new sql.Request();
-
-    request.query(
-      "SELECT deptcode, Team , COUNT(*) AS record_count FROM tblTeam WHERE Team <> '' AND deptcode <> ''  GROUP BY deptcode , Team",
+const query  = "select * from tblTeam";
+    // const query  = " "SELECT deptcode, Team , COUNT(*) AS record_count FROM tblEmployees WHERE Team <> '' AND deptcode <> ''  GROUP BY deptcode , Team","
+    request.query(query ,
+     
       function (err, recordset) {
         if (err) {
           console.log(err);
@@ -215,12 +216,27 @@ const getData = (req, res) => {
     request.input("team", sql.VarChar, team);
 
     request.query(
-      `SELECT tblTeam.Name ,tblTeam.deptcode, COSEC.FromDate,
-       COSEC.ToDate, COSEC.LeaveID, COSEC.APPLDays, COSEC.ModifyFromHalf,
-       COSEC.ModifyToHalf
-       FROM tblTeam 
-       LEFT JOIN COSEC ON tblTeam.ID = COSEC.ID 
-       WHERE deptcode = @deptcode AND Team = @team`,
+      // `SELECT tblTeam.Name ,tblTeam.deptcode, COSEC.FromDate,
+      //  COSEC.ToDate, COSEC.LeaveID, COSEC.APPLDays, COSEC.ModifyFromHalf,
+      //  COSEC.ModifyToHalf
+      //  FROM tblTeam 
+      //  LEFT JOIN COSEC ON tblTeam.ID = COSEC.ID 
+      //  WHERE deptcode = @deptcode AND Team = @team`,
+      //  `SELECT tblEmployees.Name ,tblEmployees.deptcode, COSEC.FromDate,
+      //  COSEC.ToDate, COSEC.LeaveID, COSEC.APPLDays, COSEC.ModifyFromHalf,
+      //  COSEC.ModifyToHalf
+      //  FROM tblEmployees 
+      //  LEFT JOIN COSEC ON tblEmployees.ID = COSEC.ID 
+      //  WHERE Team`,
+      // ` select *  from COSEC right join Mapping on COSEC.ID = Mapping.Employee_id 
+      // where Mapping.Team_id =2 `,
+      `SELECT tblEmployees.Name ,COSEC.FromDate,
+      COSEC.ToDate, COSEC.LeaveID, COSEC.APPLDays, COSEC.ModifyFromHalf,
+     COSEC.ModifyToHalf
+FROM COSEC
+RIGHT JOIN Mapping ON Mapping.Employee_id = COSEC.ID
+INNER JOIN tblEmployees ON Mapping.Employee_id = tblEmployees.ID
+WHERE Mapping.Team_id = 1`,
       function (err, recordset) {
         if (err) {
           console.log(err);
