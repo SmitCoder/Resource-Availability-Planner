@@ -42,23 +42,20 @@ const Team = () => {
   };
   return (
     <>
+    <div className="main-display">
       <div className="header-container">
         <div className="title">
-          <h1>
+          <div>
             Manage <b>Teams</b>
-          </h1>
+          </div>
         </div>
-        <div className="btns">
+        <div className="btn">
           <button
-            color="success"
             className="add"
             onClick={() => openform(null)}
           >
             Add Team
           </button>
-          {/* <button color="primary" className="delete">
-            Delete
-          </button> */}
         </div>
       </div>
       {/* {showForm && (
@@ -71,8 +68,8 @@ const Team = () => {
             <tr>
               <th>Id</th>
               <th>Name</th>
-              {/* <th>Description</th> */}
-              <th></th>
+              <th>Description</th>
+              {/* <th></th> */}
               <th>Actions</th>
             </tr>
           </thead>
@@ -88,13 +85,15 @@ const Team = () => {
                 <td>{team.record_count}</td>
                 <td>
                   <button onClick={() => openform(team.deptcode, team.Team)}>
-                    <EditIcon style={{ height: "20px" }} />
+                    {/* <EditIcon style={{ height: "20px" }} /> */}
+                    <i class="fa-lg fa-solid fa-pen-to-square"></i>
                   </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+      </div>
       </div>
     </>
   );

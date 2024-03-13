@@ -1,27 +1,89 @@
 /* Matrix.css */
+.overlayout {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity as needed */
+  z-index: 1; 
+  /* Ensure it's above everything else */
+  display: none;
+}
+
+.overlayout.show {
+  display: block;
+}
+
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border-radius: 7px;
+  background-color: rgb(0, 85, 145);
+  width: 95%;
+  height: 3.8rem;
+}
+
+.content{
+  font-size: 1.3rem;
+  font-weight: bold;
+  /* padding-left:3rem; */
+}
+.icon-btn i{
+  color: white;
+  /* display: flex;
+  justify-content: center;
+  align-items: end; */
+  cursor: pointer;
+  position: fixed;
+  top: 8.8rem;
+  right: 7.5rem;
+  cursor: pointer;
+}
+
+
 .first-sidebar{
     position: fixed;
-    top: 14.5%;
+    /* top: 12.5%; */
+    top: 0px;
     right: 0;
     width: 300px;
     height: 100%;
     background: linear-gradient(90deg, #dce6eb,#f1f5f7);
     padding: 5px 20px;
-    color:rgb(55, 104, 137) ;
-
+    /* color:rgb(55, 104, 137) ; */
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(100%); /*Initially hide the sidebar off-screen */
+    z-index: 2;
 }
-.first-sidebar .i{
+.first-sidebar.show {
+  transform: translateX(0); /*Move the sidebar on-screen when active*/
+}
+.first-sidebar .fa-lg.fa-solid.fa-xmark{
   position: fixed;
-  top: 6rem;
-  right: 1.3rem;
+  top: 1.8rem;
+  right: 0.5rem;
+  cursor: pointer;
 }
 .matrix-container {
-  padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0px;
+  /* padding: 1rem; */
 }
-.matrix-container i {
-  color: red;
-}
-.matrix-position{
+/* .matrix-container i {
+  /* color: rgb(55, 104, 137); */
+  /* position: fixed; */
+  /* top: 8.7rem; */
+  /* right: 11rem; */
+  /* cursor: pointer; */
+  /* z-index: 100; */
+/* } */
+.matrix-position i{
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -40,9 +102,12 @@
 .table_position{
   display: flex;
   justify-content: center;
+  margin-top: 1rem;
 }
 .matrix-table {
-  width: 80%;
+  border: 1px solid #ddd;
+    width: 85vw;
+  /* width: 70%; */
   border-collapse: collapse;
 }
 
@@ -62,10 +127,43 @@
 .matrix-table tr td{
   text-align: center;
 }
-.btn{
- 
+.matrix-table tbody tr:nth-child(even) {
+  background-color: #f1f5f7;
 }
 
+.matrix-table tbody tr:nth-child(odd) {
+  background-color: #dce6eb;
+}
+tr td .fa-solid.fa-user-minus {
+  position: static;
+}
+tr td .fa-solid.fa-trash {
+  position: static;
+}
+.text{
+  color: rgb(0, 85, 145);
+  /* font-family: LindeDaxLig, Arial, sans-serif; */
+  padding: 0px 10px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  
+}
+.data{
+  padding: 10px 0px;
+  cursor: pointer;
+}
+.data:hover{
+  color: rgb(0, 61, 105);
+}
+.data:active{
+  color: rgb(185, 30, 30);
+}
+.heading{
+  color: rgb(0, 70, 120);
+  font-family: LindeDaxLig, Arial, sans-serif;
+  font-size: 1.2rem;
+  padding: 27px 10px ;
+}
 /* .btn-alignment{
   display: flex;
   justify-content: end;

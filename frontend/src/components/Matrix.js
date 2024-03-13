@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useLocation } from "react-router";
 import "./Matrix.css";
@@ -16,6 +16,7 @@ function Matrix() {
   const [secondSidebarOpen, setSecondSidebarOpen] = useState(false);
   const [selectedDeptData, setSelectedDeptData] = useState([]);
   const [selectedMember, setSelectedMember] = useState([]);
+  const overlayoutRef = useRef(null);
 
   useEffect(() => {
     fetchNamesData(deptcode, team);
@@ -103,99 +104,123 @@ function Matrix() {
       console.error("Error sending selected members:", error);
     }
   };
-
+  const handleDelete = async (ID) => {
+    // try{
+    //   await axios.delete(`http://localhost:5000/depts/${ID}`);
+    //   setData(data.filter(item=>item.ID!==ID));
+    // }catch(error){
+    //   console.error("error deleting data:",error);
+    // }
+  };
+  const handleOverlayoutClick = () => {
+    setSidebar(false); // Close the sidebar when clicking outside
+  };
   // console.log(sidebarData);
 
   return (
     <div className="matrix-container">
-      <h1 className="matrix-heading">
-        {deptcode} - {team}
-      </h1>
-
-      <i className="fa-lg fa-solid fa-plus" onClick={toggleFirstSidebar}></i>
-      <div className="table_position">
-      <table className="matrix-table">
-        <thead>
-          <tr>
-            {/* <th>Sapid</th> */}
-            <th>Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr key={index}>
-              {/* <td>{item.ID}</td> */}
-              <td>{item.Name}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      
+      <div className="main-container">
+        <div className="content">
+          {deptcode} - {team}        
+        </div>
+        <div className="icon-btn">
+          <i className="fa-lg fa-solid fa-plus" onClick={toggleFirstSidebar}></i>
+        </div>
       </div>
 
-      {sidebar && (
-        <div className="first-sidebar"
-          // style={{
-          //   position: "fixed",
-          //   top: "13.5%",
-          //   right: 0,
-          //   width: "300px",
-          //   height: "100%",
-          //   backgroundColor: "#f0f0f0",
-          //   padding: "20px",
-          // }}
-        >
-          <div className="i">
-          <i className="fa-lg fa-solid fa-xmark" onClick={CloseFirstSideBar}></i></div>
-          <h2>Department Names</h2>
+      <div className={`overlayout ${sidebar ? "show" : ""}`} onClick={handleOverlayoutClick}></div>
+      {/* <h1 className="matrix-heading">
+        {deptcode} - {team}
+      </h1> */}
+      {/* <i className="fa-lg fa-solid fa-plus" onClick={toggleFirstSidebar}></i> */}
+      <div className="table_position">
+        <table className="matrix-table">
+          <thead>
+            <tr>
+              <th>Sapid</th>
+              <th>Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((item, index) => (
+              <tr key={index}>
+                <td>{item.sapid}</td>
+                <td>{item.Name}</td>
+                {/* <td><i class="fa-solid fa-user-minus"></i></td> */}
+                <td>
+                  <i
+                    class="fa-solid fa-trash"
+                    onClick={() => handleDelete(item.ID)}
+                  ></i>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* {sidebar && ( */}
+
+      <div className={`first-sidebar ${sidebar ? "show" : ""}`}>
+        <i className="fa-lg fa-solid fa-xmark" onClick={CloseFirstSideBar}></i>
+
+        <div className="heading">Department Names</div>
+        <div className="text">
           {sidebarData.map((item, index) => (
             <div key={index}>
-              <h4>
-                <i
-                  className="fa-solid fa-plus"
-                  onClick={() => toggleSecondSidebar(item.deptcode)}
-                ></i>
+              <div
+                className="data"
+                onClick={() => toggleSecondSidebar(item.deptcode)}
+              >
+                {/* <i
+                className="fa-solid fa-plus"
+                onClick={() => toggleSecondSidebar(item.deptcode)}
+              ></i> */}
                 {item.deptcode}
-              </h4>
+              </div>
             </div>
           ))}
+        </div>
 
-          {secondSidebarOpen && (
-            <div
-              className="second-sidebar"
-              // style={{
-              //   position: "fixed",
-              //   top: 0,
-              //   right: "300px", // Adjust this value based on the width of the first sidebar
-              //   width: "300px",
-              //   height: "100%",
-              //   backgroundColor: "#f0f0f0",
-              //   padding: "20px",
-              // }}
-            >
-              {/* <i className="fa-solid fa-xmark" onClick={CloseSecondSideBar}></i> */}
-              {/* <h4>Members</h4> */}
+        {secondSidebarOpen && (
+          <div
+            className="second-sidebar"
+            // style={{
+            //   position: "fixed",
+            //   top: 0,
+            //   right: "300px", // Adjust this value based on the width of the first sidebar
+            //   width: "300px",
+            //   height: "100%",
+            //   backgroundColor: "#f0f0f0",
+            //   padding: "20px",
+            // }}
+          >
+            {/* <i className="fa-solid fa-xmark" onClick={CloseSecondSideBar}></i> */}
+            {/* <h4>Members</h4> */}
 
-              {/* smit's */}
-              {/* {selectedDeptData.map((item, index) => (
+            {/* smit's */}
+            {/* {selectedDeptData.map((item, index) => (
                 <div key={index}>
                   <h4>{item.Name}</h4>
                 </div>
               ))} */}
 
-              <Select
-                isMulti
-                options={selectedDeptData.map((item) => ({
-                  label: item.Name,
-                  value: item.Name,
-                }))}
-                onChange={handleCheckboxChange}
-                closeMenuOnSelect={false}
-                display="chip"
-              ></Select>
-            </div>
-          )}
-        </div>
-      )}
+            <Select
+              isMulti
+              options={selectedDeptData.map((item) => ({
+                label: item.Name,
+                value: item.Name,
+              }))}
+              onChange={handleCheckboxChange}
+              closeMenuOnSelect={false}
+              display="chip"
+            ></Select>
+          </div>
+        )}
+      </div>
+      {/* )} */}
     </div>
   );
 }

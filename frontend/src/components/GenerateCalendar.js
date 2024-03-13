@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import moment from "moment";
 import "../Css/GenerateCalendar.css";
 // import "../Css/F.css";
-import pallate from "../Images/color-pallate.jpeg";
+import pallate from "../Images/color-pallate.png";
+// import pallate from "../Images/color-pallate2.png";
 
 import axios from "axios";
 import { HD, codes } from "./configuration";

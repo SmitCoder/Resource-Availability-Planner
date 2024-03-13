@@ -84,26 +84,26 @@ const groupData = (data) => {
   return Object.values(grouped);
 };
 
-app.get("/", (req, res) => {
-  sql.connect(config, function (err) {
-    if (err) {
-      console.log(err);
-      return res.status(500).send("Internal Server Error");
-    }
+// app.get("/", (req, res) => {
+//   sql.connect(config, function (err) {
+//     if (err) {
+//       console.log(err);
+//       return res.status(500).send("Internal Server Error");
+//     }
 
-    const request = new sql.Request();
+//     const request = new sql.Request();
 
-    request.query("select * from Leaves$ ", function (err, recordset) {
-      if (err) {
-        console.log(err);
-        return res.status(500).send("Internal Server Error");
-      }
-      const groupedData = groupData(recordset);
+//     request.query("select * from Leaves$ ", function (err, recordset) {
+//       if (err) {
+//         console.log(err);
+//         return res.status(500).send("Internal Server Error");
+//       }
+//       const groupedData = groupData(recordset);
 
-      res.json(groupedData);
-    });
-  });
-});
+//       res.json(groupedData);
+//     });
+//   });
+// });
 
 app.post("/COSEC", (req, res) => {
   sql.connect(config, function (err) {
@@ -114,7 +114,7 @@ app.post("/COSEC", (req, res) => {
 
     const request = new sql.Request();
 
-    request.query("select * from Leaves$", function (err, recordset) {
+    request.query("select * from tblExtLeaves", function (err, recordset) {
       if (err) {
         console.log(err);
         return res.status(500).send("Internal Server Error");

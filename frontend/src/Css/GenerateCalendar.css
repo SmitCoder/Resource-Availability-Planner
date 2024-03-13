@@ -18,7 +18,7 @@
 }
 
 .container img {
-  height: 24px;
+  height: 50px;
   /* width: 18rem; */
 }
 .pallate2 {
@@ -208,8 +208,9 @@ span i {
 
   .container2 img {
     /* background-color: rgb(18, 136, 136); */
-    width: 15.3rem;
-    height: 1.45rem;
+    /* width: 15.3rem; */
+    /* height: 1.45rem; */
+    /* height: 2rem; */
   }
 }
 
