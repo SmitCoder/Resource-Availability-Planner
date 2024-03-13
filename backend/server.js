@@ -31,23 +31,78 @@ app.use( "/", matrixRoutes);
 app.use("/" , departmentRoutes)
 app.use("/", teamsRoutes);
 
-app.post("/sendMembers", (req, res) => {
-  const { selectedMember , teamid , team_Name } = req.body;
-  console.log(selectedMember);
-  console.log(teamid , team_Name);
-  const data = selectedMember
+// app.post("/sendMembers", (req, res) => {
+//   const { selectedMember , teamid , team_Name } = req.body;
+//   console.log(selectedMember);
+//   console.log(teamid , team_Name);
+//   const data = selectedMember
    
+//   // Flatten the array of arrays
+//   const flattenedArray = data.flat();
+  
+//   // Filter out duplicate objects based on their value property
+//   const uniqueArray = flattenedArray.filter((obj, index, self) =>
+//     index === self.findIndex((o) => o.value === obj.value)
+//   );
+  
+//   console.log(uniqueArray);
+//   const insertQuery = "INSERT INTO Mapping (Team_id, Employee_id) VALUES (@teamid, @value)";
+//   const values = uniqueArray.map(({  value }) => [ teamid ,value]);
+//   sql.connect(config, function (err) {
+//     if (err) {
+//       console.log(err);
+//       return res.status(500).send("Internal Server Error");
+//     }
+
+//     const request = new sql.Request();
+
+//     // uniqueArray.forEach(({ values }) => {
+//     //   request.input("teamid", sql.Int, teamid);
+//     //   request.input("value", sql.NVarChar, value);
+//     //   request.query(insertQuery,[values], function (err, recordset) {
+//     //     if (err) {
+//     //       console.log(err);
+//     //       return res.status(500).send("Internal Server Error");
+//     //     }
+//     //   });
+      
+//     values.forEach(([teamid, value]) => {
+//       request.input("teamid", sql.Int, teamid);
+//       request.input("value", sql.NVarChar, value);
+//       request.query(insertQuery, function (err, recordset) {
+//         if (err) {
+//           console.log(err);
+//           return res.status(500).send("Internal Server Error");
+//         }
+//       });
+
+//     console.log("Data inserted into the database:", uniqueArray);
+//     // res.status(200).json({ message: "Data inserted successfully." });
+//       // res.json(recordset);
+//     });
+//   });
+  
+// });
+app.use("/", employeeRoutes);
+
+app.post("/sendMembers", (req, res) => {
+  const { selectedOptions, teamid, team_Name } = req.body;
+  console.log(selectedOptions);
+  console.log(teamid, team_Name);
+  const data = selectedOptions;
+
   // Flatten the array of arrays
   const flattenedArray = data.flat();
-  
+
   // Filter out duplicate objects based on their value property
   const uniqueArray = flattenedArray.filter((obj, index, self) =>
     index === self.findIndex((o) => o.value === obj.value)
   );
-  
+
   console.log(uniqueArray);
-  const insertQuery = "INSERT INTO Mapping (Team_id, Employee_id) VALUES (@teamid, @value)";
-  const values = uniqueArray.map(({  value }) => [ teamid ,value]);
+  const insertQuery = "INSERT INTO Mapping (Team_id, Employee_id) VALUES ";
+  const values = uniqueArray.map(({ value }) => `(${teamid}, '${value}')`).join(", ");
+
   sql.connect(config, function (err) {
     if (err) {
       console.log(err);
@@ -56,34 +111,19 @@ app.post("/sendMembers", (req, res) => {
 
     const request = new sql.Request();
 
-    // uniqueArray.forEach(({ values }) => {
-    //   request.input("teamid", sql.Int, teamid);
-    //   request.input("value", sql.NVarChar, value);
-    //   request.query(insertQuery,[values], function (err, recordset) {
-    //     if (err) {
-    //       console.log(err);
-    //       return res.status(500).send("Internal Server Error");
-    //     }
-    //   });
-      
-    values.forEach(([teamid, value]) => {
-      request.input("teamid", sql.Int, teamid);
-      request.input("value", sql.NVarChar, value);
-      request.query(insertQuery, function (err, recordset) {
-        if (err) {
-          console.log(err);
-          return res.status(500).send("Internal Server Error");
-        }
-      });
+    // Construct and execute the parameterized insert query
+    const query = insertQuery + values;
+    request.query(query, function (err, recordset) {
+      if (err) {
+        console.log(err);
+        return res.status(500).send("Internal Server Error");
+      }
 
-    console.log("Data inserted into the database:", uniqueArray);
-    // res.status(200).json({ message: "Data inserted successfully." });
-      // res.json(recordset);
+      console.log("Data inserted into the database:", uniqueArray);
+      res.status(200).json({ message: "Data inserted successfully." });
     });
   });
-  
 });
-app.use("/", employeeRoutes);
 
 
 
@@ -112,7 +152,7 @@ const groupData = (data) => {
   const grouped = {};
   data.recordset.forEach((record) => {
     const name = record.Name;
-    const id = record.Personid;
+    const id = record.ID;
     // console.log("Processing record with Name:", name);
 
     if (!grouped[name]) {
@@ -135,26 +175,26 @@ const groupData = (data) => {
   return Object.values(grouped);
 };
 
-app.get("/", (req, res) => {
-  sql.connect(config, function (err) {
-    if (err) {
-      console.log(err);
-      return res.status(500).send("Internal Server Error");
-    }
+// app.get("/", (req, res) => {
+//   sql.connect(config, function (err) {
+//     if (err) {
+//       console.log(err);
+//       return res.status(500).send("Internal Server Error");
+//     }
 
-    const request = new sql.Request();
+//     const request = new sql.Request();
 
-    request.query("select * from Sheet2$ ", function (err, recordset) {
-      if (err) {
-        console.log(err);
-        return res.status(500).send("Internal Server Error");
-      }
-      const groupedData = groupData(recordset);
+//     request.query("select * from Sheet2$ ", function (err, recordset) {
+//       if (err) {
+//         console.log(err);
+//         return res.status(500).send("Internal Server Error");
+//       }
+//       const groupedData = groupData(recordset);
 
-      res.json(groupedData);
-    });
-  });
-});
+//       res.json(groupedData);
+//     });
+//   });
+// });
 
 app.post("/COSEC", (req, res) => {
   sql.connect(config, function (err) {
@@ -221,23 +261,25 @@ app.post("/", (req, res) => {
 });
 
 app.post("/submitFormData", async (req, res) => {
-  const { name, fromDate, toDate, leaveType } = req.body;
+  const { name, id , fromDate, toDate, leaveType } = req.body;
 
   const formData = [
     {
       Name: name,
+      ID: id,
       FromDate: fromDate,
       ToDate: toDate,
       LeaveID: leaveType,
     },
   ];
+  console.log(formData);
   sql.connect(config, function (err, recordset) {
     if (err) {
       console.log(err);
     }
 
     let request = new sql.Request();
-    const insertQuery = `INSERT INTO tblExtLeaves (Name, FromDate, ToDate, LeaveID) VALUES ('${name}', '${fromDate}', '${toDate}', '${leaveType}')`;
+    const insertQuery = `INSERT INTO tblExtLeaves (ID , Name, FromDate, ToDate, LeaveID) VALUES ('${id}', '${name}', '${fromDate}', '${toDate}', '${leaveType}')`;
 
     request.query(insertQuery, function (err, recordset) {
       if (err) {

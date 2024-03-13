@@ -5,12 +5,14 @@ import moment from "moment";
 
 function PopUpForm(props) {
   const [leaveType, setLeaveType] = useState("");
-  const { name, fromDate, onSubmitForm, iconClose } = props;
+  const { name, id , fromDate, onSubmitForm, iconClose  } = props;
   const [todate, setToDate] = useState();
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(id);
     const formData = {
       name,
+      id,
       fromDate: moment(fromDate).format("YYYY-MM-DD"),
       toDate: moment(todate).format("YYYY-MM-DD"),
       leaveType,
@@ -36,7 +38,8 @@ function PopUpForm(props) {
           }}
         ></i>
         <div className="main-content">
-          <input value={name} hidden />
+          <label>{name}</label>
+          <label>{id}</label>
 
           <div>
             <label htmlFor="inputFromDate">From:</label>
@@ -45,7 +48,7 @@ function PopUpForm(props) {
               value={moment(fromDate).format("YYYY-MM-DD")}
               type="date"
               id="inputFromDate"
-              readOnly
+              
             />
           </div>
           <div>

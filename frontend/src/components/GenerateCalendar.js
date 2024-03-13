@@ -22,16 +22,33 @@ function GenerateCalendar() {
   const [selectedEmployee, setSelectedEmployee] = useState("");
   const [selectedDate, setselectedDate] = useState("");
   const [name, setname] = useState("");
+  const [id , setid] = useState("")
   const [asc, setAsc] = useState(true);
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [dropdownData, setDropdownData] = useState([]);
+  const [original , setoriginal] = useState([])
+  const [dropdownFetchedData, setDropdownFetchedData] = useState([]);
 
   useEffect(() => {
-    fetchEmployees();
-  }, [startDate, endDate, searchQuery, input, icon]);
+    // if(selectedOption === "")
+    // {
+      fetchEmployees();
+    //   console.log("hi");
 
+    // }else{
+
+    // }
+   
+  }, [startDate, endDate, searchQuery]);
+
+  useEffect(() => {
+    const filteredData = dropdownFetchedData.filter(employee =>
+      employee.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setEmployees(filteredData);
+  }, [dropdownFetchedData, searchQuery]);
   useEffect(() => {
     document.addEventListener("keydown", (e) => detectKeyDown(e, closeModal));
     return () => {
@@ -43,6 +60,8 @@ function GenerateCalendar() {
 
   const fetchEmployees = async () => {
     try {
+ 
+      if(selectedOption === ""){
       const [mergerRes, employeesRes] = await Promise.all([
         axios.post("http://localhost:5000/COSEC"),
         axios.post("http://localhost:5000/", {
@@ -63,26 +82,35 @@ function GenerateCalendar() {
         ...item,
         source: "Employees API",
       }));
+    
 
       const combinedData = mergedDataWithTag.concat(employeesDataWithTag);
-      combinedData.sort((a, b) => {
-        if (asc) {
-          return a.name.localeCompare(b.name); // Ascending order
-        } else {
-          return b.name.localeCompare(a.name); // Descending order
-        }
-      });
+    
+      // combinedData.sort((a, b) => {
+      //   if (asc) {
+      //     return a.name.localeCompare(b.name); // Ascending order
+      //   } else {
+      //     return b.name.localeCompare(a.name); // Descending order
+      //   }
+      // });
       setEmployees(combinedData);
+      console.log(combinedData);
+    }
+    // else{
+    //   setEmployees(filteredData)
+    // }
+      
     } catch (error) {
       console.error("Error fetching employee names:", error);
     }
   };
 
-  const openModal = (dateSelected, name) => {
+  const openModal = (dateSelected, name , id) => {
     if (!isOpen) {
       setIsOpen(true);
       setselectedDate(dateSelected._d);
       setname(name);
+      setid(id)
     }
   };
 
@@ -96,26 +124,30 @@ function GenerateCalendar() {
         "http://localhost:5000/submitFormData",
         formData
       );
+      if(response.status === 200)
+      {
+        window.location.reload();
+      }
       console.log("Form data submitted successfully:", response.data);
 
-      setEmployees((prevEmployees) => {
-        const updatedEmployees = prevEmployees.map((existingEmployee) => {
-          const updatedEmployee = response.data.find(
-            (updated) => updated.name === existingEmployee.name
-          );
+      // setEmployees((prevEmployees) => {
+      //   const updatedEmployees = prevEmployees.map((existingEmployee) => {
+      //     const updatedEmployee = response.data.find(
+      //       (updated) => updated.name === existingEmployee.name
+      //     );
 
-          // If an updated employee is found, merge only specific fields
-          if (updatedEmployee) {
-            // Here you can specify which fields to update
-            return { ...existingEmployee, ...updatedEmployee };
-          }
+      //     // If an updated employee is found, merge only specific fields
+      //     if (updatedEmployee) {
+      //       // Here you can specify which fields to update
+      //       return { ...existingEmployee, ...updatedEmployee };
+      //     }
 
-          // If no updated data is found for the existing employee, keep it unchanged
-          return existingEmployee;
-        });
+      //     // If no updated data is found for the existing employee, keep it unchanged
+      //     return existingEmployee;
+      //   });
 
-        return updatedEmployees;
-      });
+      //   return updatedEmployees;
+      // });
 
       // Close the form after successful submission
       setIsOpen(false);
@@ -124,20 +156,12 @@ function GenerateCalendar() {
     }
   };
 
-  // const handleDropdownChange = async (event) => {
-  //   setSelectedOption(event.target.value);
-  //   try {
-  //     const response = await axios.get("http://localhost:5000/teams");
-  //     setDropdownData(response.data.recordesets[0]);
-  //     console.log(response.data.recordesets[0]); // Assuming the response is an array of dropdown options
-  //   } catch (error) {
-  //     console.error("Error fetching dropdown data:", error);
-  //   }
-  //   // Handle dropdown change and fetched data if needed
-  // };
 
   const handleDropdownChange = async (e) => {
     console.log("Getting into function");
+    console.log("into clicked");
+    // console.log(e.target.value)
+    // const id = e.target.value
     // const selectedValue = e.target.value;
     // setSelectedOption(selectedValue);
     // console.log(selectedValue);
@@ -151,6 +175,7 @@ function GenerateCalendar() {
         // selectedValue,
         // deptcode,
         // team,
+        // id
       });
       // console.log("Dropdown data response:", response.data); // Log response data
       setDropdownData(response.data.recordsets[0]);
@@ -159,26 +184,61 @@ function GenerateCalendar() {
     }
   };
 
+  const sortedEmployees = useMemo(() => {
+    const sortedData = [...employees]; // Copy employees array
+    sortedData.sort((a, b) => {
+      if (asc) {
+        return a.name.localeCompare(b.name); // Ascending order
+      } else {
+        return b.name.localeCompare(a.name); // Descending order
+      }
+    });
+    return sortedData;
+  }, [employees, asc]);
+
+
+  // const handleDropdownData = async (e) => {
+  //   console.log("Getting into function");
+  //   const selectedValue = e.target.value;
+  //   setSelectedOption(selectedValue);
+  //   console.log(selectedValue);
+     
+
+  //   // const [deptcode, team] = selectedValue.split("-");
+  //   // console.log(deptcode, team);
+  //   try {
+  //     const response2 = await axios.post("http://localhost:5000/DropDownData", {
+  //       // deptcode,
+  //       // team,
+  //       selectedValue
+  //     });
+  //     console.log("Dropdown data response:", response2.data);
+  //     const filteredData = response2.data.filter(employee =>
+  //       employee.name.toLowerCase().includes(searchQuery.toLowerCase())
+  //     );
+  //     // if (Array.isArray(response2.data)) {
+  //       setEmployees(filteredData);
+     
+   
+  //       console.log(filteredData);
+        
+  //     // } else {
+  //       // console.error("Invalid response for employees data:", response2.data);
+  //     // }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
   const handleDropdownData = async (e) => {
-    console.log("Getting into function");
     const selectedValue = e.target.value;
     setSelectedOption(selectedValue);
-    console.log(selectedValue);
-
-    const [deptcode, team] = selectedValue.split("-");
-    console.log(deptcode, team);
+  
     try {
       const response2 = await axios.post("http://localhost:5000/DropDownData", {
-        deptcode,
-        team,
+        selectedValue,
       });
-      console.log("Dropdown data response:", response2.data);
-
-      // if (Array.isArray(response2.data)) {
-        setEmployees(response2.data);
-      // } else {
-        // console.error("Invalid response for employees data:", response2.data);
-      // }
+      setDropdownFetchedData(response2.data);
+      console.log(response2.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -188,9 +248,20 @@ function GenerateCalendar() {
     console.log("clicked");
     setAsc((prevAsc) => !prevAsc);
     setIcon((prevIcon) => (prevIcon === "up" ? "down" : "up"));
+    const Emp = employees.sort((a,b)=>{
+      if (asc) {
+        // Ascending order
+        return b.name.localeCompare(a.name);
+      } else {
+
+        return a.name.localeCompare(b.name); // Descending order
+      }
+    })
+    setEmployees(Emp)
   };
 
   const handleSearchChange = (e) => {
+    
     setSearchQuery(e.target.value);
   };
 
@@ -280,7 +351,7 @@ function GenerateCalendar() {
     filteredEmployees.forEach((employee) => {
       const rowData = (
         <tr key={employee.name}>
-          <td className="datarows">{employee.name}</td>
+          <td className="datarows">{employee.name} {employee.id}</td>
           {dates.map((date, index) => {
             const currentDate = startDate
               .clone()
@@ -323,7 +394,7 @@ function GenerateCalendar() {
             return (
               <td
                 onClick={
-                  clickable ? () => openModal(currentDate, employee.name) : null
+                  clickable ? () => openModal(currentDate, employee.name , employee.id) : null
                 }
                 key={`${employee.name}-${date.date}-${index}`}
                 style={{ backgroundColor, cursor: "pointer", zIndex: "" }}
@@ -336,7 +407,7 @@ function GenerateCalendar() {
     });
 
     return [monthHeaderRow, headerRow, ...tableRows];
-  }, [employees, startDate, endDate]);
+  }, [sortedEmployees ,employees, startDate, endDate]);
 
   return (
     <>
@@ -379,14 +450,14 @@ function GenerateCalendar() {
                 <select
                   // value={selectedOption}
                   onClick={(e) => handleDropdownChange(e)}
-                  placeholder="select it"
+                  // placeholder="select it"
                   onChange={(e) => handleDropdownData(e)}
                 >
                   <option value="">Select option</option>
                   {dropdownData.map((item, index) => (
-                    <option key={index} value={`${item.deptcode}-${item.Team}`}>
+                    <option key={index} value={item.Team_id}>
                   
-                      {item.Name} 
+                      {item.Name}
                     </option>
                   ))}
                 </select>
@@ -411,6 +482,7 @@ function GenerateCalendar() {
           {isOpen && (
             <PopUpForm
               name={name}
+              id={id}
               fromDate={selectedDate}
               iconClose={closeModal}
               onSubmitForm={handleSubmitForm}

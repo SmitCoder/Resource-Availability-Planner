@@ -63,7 +63,7 @@ setShowForm(!showForm)
         </div>
       </div>
       {showForm && (
-        <Editing teamId={selectedTeamId} teamdata={data} onClose={closeForm} />
+        <Editing onClose={closeForm} />
       )}{" "}
 
       <div className="table-responsive">

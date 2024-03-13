@@ -17,7 +17,8 @@ const groupData = (data) => {
   const grouped = {};
   data.recordset.forEach((record) => {
     const name = record.Name;
-    const id = record.Personid;
+    // const id = record.ID;
+    const id = record.Employee_id
     // console.log("Processing record with Name:", name);
 
     if (!grouped[name]) {
@@ -98,21 +99,10 @@ const pushTableData = (req, res) => {
 };
 
 const updateTableData = (req, res) => {
-  const { name, description, teamId } = req.body;
-
-  console.log(name);
-  console.log(teamId);
-
-  if (!teamId) {
-    // If teamId is null, it's a new entry
-    createNewEntry(req, res);
-  } else {
-    // If teamId is provided, it's an update operation
-    updateEntry(req, res);
-  }
-};
-function createNewEntry(req, res) {
   const { name, description } = req.body;
+
+  console.log(name , description);
+  
 
   sql.connect(config, function (err, recordset) {
     if (err) {
@@ -121,7 +111,7 @@ function createNewEntry(req, res) {
     }
 
     let request = new sql.Request();
-    const insertQuery = `INSERT INTO tblTeams (name, description) VALUES ('${name}', '${description}')`;
+    const insertQuery = `INSERT INTO tblTeam (Name, Description) VALUES ('${name}', '${description}')`;
 
     request.query(insertQuery, function (err, recordset) {
       if (err) {
@@ -132,33 +122,38 @@ function createNewEntry(req, res) {
       res.json({ message: "New entry created successfully" });
     });
   });
-}
+};
+// function createNewEntry(req, res) {
+//   const { name, description } = req.body;
 
-function updateEntry(req, res) {
-  const { teamId, name, description } = req.body;
+  
+// }
 
-  sql.connect(config, function (err, recordset) {
-    if (err) {
-      console.log(err);
-      return res.status(500).json({ error: "Database connection error" });
-    }
+// function updateEntry(req, res) {
+//   const { teamId, name, description } = req.body;
 
-    let request = new sql.Request();
-    const updateQuery = `UPDATE tblTeams SET name='${name}', description='${description}' WHERE Teamid='${teamId}'`;
+//   sql.connect(config, function (err, recordset) {
+//     if (err) {
+//       console.log(err);
+//       return res.status(500).json({ error: "Database connection error" });
+//     }
 
-    request.query(updateQuery, function (err, recordset) {
-      if (err) {
-        console.log(err);
-        return res.status(500).json({ error: "Database query error" });
-      }
+//     let request = new sql.Request();
+//     const updateQuery = `UPDATE tblTeams SET name='${name}', description='${description}' WHERE Teamid='${teamId}'`;
 
-      res.json({ message: "Entry updated successfully" });
-    });
-  });
+//     request.query(updateQuery, function (err, recordset) {
+//       if (err) {
+//         console.log(err);
+//         return res.status(500).json({ error: "Database query error" });
+//       }
 
-  // sql.close();
-  console.log("connection ended");
-}
+//       res.json({ message: "Entry updated successfully" });
+//     });
+//   });
+
+//   // sql.close();
+//   console.log("connection ended");
+// }
 
 // const getData = (req, res) => {
 //   const { deptcode, team } = req.body;
@@ -201,9 +196,11 @@ function updateEntry(req, res) {
 // };
 
 const getData = (req, res) => {
-  const { deptcode, team } = req.body;
+  // const { deptcode, team } = req.body;
+  const {selectedValue} = req.body;
+  console.log(selectedValue);
 
-  console.log(deptcode, team);
+  // console.log(deptcode, team);
   sql.connect(config, function (err) {
     if (err) {
       console.log(err);
@@ -212,8 +209,8 @@ const getData = (req, res) => {
 
     const request = new sql.Request();
 
-    request.input("deptcode", sql.VarChar, deptcode);
-    request.input("team", sql.VarChar, team);
+    // request.input("deptcode", sql.VarChar, deptcode);
+    request.input("selectedValue", sql.Int, selectedValue);
 
     request.query(
       // `SELECT tblTeam.Name ,tblTeam.deptcode, COSEC.FromDate,
@@ -230,19 +227,30 @@ const getData = (req, res) => {
       //  WHERE Team`,
       // ` select *  from COSEC right join Mapping on COSEC.ID = Mapping.Employee_id 
       // where Mapping.Team_id =2 `,
-      `SELECT tblEmployees.Name ,COSEC.FromDate,
-      COSEC.ToDate, COSEC.LeaveID, COSEC.APPLDays, COSEC.ModifyFromHalf,
-     COSEC.ModifyToHalf
-FROM COSEC
-RIGHT JOIN Mapping ON Mapping.Employee_id = COSEC.ID
-INNER JOIN tblEmployees ON Mapping.Employee_id = tblEmployees.ID
-WHERE Mapping.Team_id = 1`,
+      `SELECT  
+      Employee_id,
+      COSEC.ID,
+      tblEmployees.Name,
+      COALESCE(COSEC.FromDate, tblExtLeaves.FromDate) AS FromDate,
+    COALESCE(COSEC.ToDate , tblExtLeaves.ToDate) AS ToDate,
+  
+      COALESCE(COSEC.LeaveID,tblExtLeaves.LeaveID) AS LeaveID,
+      COSEC.APPLDays,
+      COSEC.ModifyFromHalf,
+      COSEC.ModifyToHalf
+  FROM 
+      Mapping
+  INNER JOIN tblEmployees ON Mapping.Employee_id = tblEmployees.ID
+  LEFT JOIN COSEC ON Mapping.Employee_id = COSEC.ID
+  LEFT JOIN tblExtLeaves ON Mapping.Employee_id = tblExtLeaves.ID
+  WHERE 
+      Mapping.Team_id = @selectedValue`,
       function (err, recordset) {
         if (err) {
           console.log(err);
           return res.status(500).send("Internal Server Error");
         }
-
+        console.log(recordset);
         const groupedData = groupData(recordset);
         res.json(groupedData);
       }
