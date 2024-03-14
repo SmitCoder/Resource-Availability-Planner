@@ -7,6 +7,7 @@
 .matrix-heading {
   text-align: center;
   margin-bottom: 20px;
+  /* position: relative; */
 }
 
 .matrix-table {
@@ -26,4 +27,19 @@
 
 .matrix-table tbody tr:last-child td {
   border-bottom: none;
+}
+
+.btn{
+ 
+}
+
+/* .btn-alignment{
+  display: flex;
+  justify-content: end;
+  padding-right: 3rem;
+} */
+.btn{
+  position: sticky;
+  top: 0px;
+  left: 85rem;
 }

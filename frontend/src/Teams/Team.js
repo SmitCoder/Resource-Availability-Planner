@@ -57,9 +57,9 @@ setShowForm(!showForm)
           >
             Add Team
           </button>
-          <button color="primary" className="delete">
+          {/* <button color="primary" className="delete">
             Delete
-          </button>
+          </button> */}
         </div>
       </div>
       {showForm && (
@@ -102,3 +102,4 @@ setShowForm(!showForm)
 };
 
 export default Team;
+
