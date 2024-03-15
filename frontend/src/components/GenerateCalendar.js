@@ -49,6 +49,7 @@ function GenerateCalendar() {
     );
     setEmployees(filteredData);
   }, [dropdownFetchedData, searchQuery]);
+  
   useEffect(() => {
     document.addEventListener("keydown", (e) => detectKeyDown(e, closeModal));
     return () => {
@@ -351,7 +352,7 @@ function GenerateCalendar() {
     filteredEmployees.forEach((employee) => {
       const rowData = (
         <tr key={employee.name}>
-          <td className="datarows">{employee.name} {employee.id}</td>
+          <td className="datarows">{employee.name} </td>
           {dates.map((date, index) => {
             const currentDate = startDate
               .clone()
@@ -447,7 +448,7 @@ function GenerateCalendar() {
                 />
               </div>
               <div>
-                <select
+                <select className="team-selection"
                   // value={selectedOption}
                   onClick={(e) => handleDropdownChange(e)}
                   // placeholder="select it"

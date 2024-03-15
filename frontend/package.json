@@ -24,6 +24,7 @@
     "react-datepicker": "^6.1.0",
     "react-dom": "^18.2.0",
     "react-lite-month-picker": "^1.2.15",
+    "react-multi-select-component": "^4.3.4",
     "react-multiselect": "^0.4.1",
     "react-responsive": "^9.0.2",
     "react-router": "^6.21.3",

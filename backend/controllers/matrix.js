@@ -1,7 +1,7 @@
 const sql = require("mssql");
 const config = {
-  user: "SA",
-  password: "091002",
+  user: "smit",
+  password: "hello123",
   server: "localhost\\SQLEXPRESS",
   database: "leaves",
   port: "5000",
@@ -95,9 +95,9 @@ sql.connect(config , function(err){
     return res.status(500).send("Internal Server Error");
   }
   const request = new sql.Request();
-
+request.input("id" , sql.NVarChar , id);
     request.query(
-     `delete from Mapping where Employee_id = ${id}`,
+     `delete from Mapping where Employee_id = @id`,
       function (err, recordset) {
         if (err) {
           console.log(err);

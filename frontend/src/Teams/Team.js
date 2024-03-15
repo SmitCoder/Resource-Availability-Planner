@@ -4,6 +4,9 @@ import { useNavigate } from "react-router";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
 import Editing from "../Teams/Editing";
+import {
+  detectKeyDown,
+} from "../components/handleFunction";
 
 const Team = () => {
   const [data, setData] = useState([]);
@@ -14,6 +17,14 @@ const Team = () => {
     fetchTeamsData();
   }, []);
 
+  useEffect(() => {
+    document.addEventListener("keydown", (e) => detectKeyDown(e, closeModal));
+    return () => {
+      document.removeEventListener("keydown", (e) =>
+        detectKeyDown(e, closeModal)
+      );
+    };
+  }, []);
   const fetchTeamsData = async () => {
     try {
       const response = await axios.post("http://localhost:5000/teams");
@@ -23,6 +34,9 @@ const Team = () => {
     }
   };
 
+  const closeModal = ()=>{
+    setShowForm(false)
+  }
   const openform = ( teamid , team_Name) => {
 
   // setShowForm(!showForm);
@@ -73,7 +87,7 @@ setShowForm(!showForm)
               <th>Id</th>
               <th>Name</th>
               {/* <th>Description</th> */}
-              <th>D</th>
+              <th>Description</th>
               <th>Actions</th>
             </tr>
           </thead>

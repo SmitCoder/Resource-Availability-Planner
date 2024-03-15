@@ -12,7 +12,7 @@ const App = () => {
   return (
     <>
     
-      <Sidebar />
+      {/* <Sidebar /> */}
       <Nav />
 
       <Routes>

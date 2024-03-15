@@ -1,38 +1,280 @@
-/* Matrix.css */
-
-.matrix-container {
-  padding: 20px;
+.overlayout {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity as needed */
+  z-index: 1; 
+  /* Ensure it's above everything else */
+  display: none;
 }
 
+.overlayout.show {
+  display: block;
+}
+
+.main-container {
+  /* display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border-radius: 7px;
+  background-color: rgb(0, 85, 145);
+
+ 
+  font-size: x-large; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 3.8rem;
+  color: white;
+  width: 61%;
+  /* background: #566787; */
+  padding: 0px 20px;
+  border-radius: 7px;
+  background-color: rgb(0, 85, 145);
+
+}
+
+.content{
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-left: 32px;
+  /* padding-left:3rem; */
+
+}
+.icon-btn i{
+  color: rgb(31, 225, 231);
+  /* display: flex;
+  justify-content: center;
+  align-items: end; */
+  cursor: pointer;
+  /* position: fixed; */
+  /* top: 8.8rem; */
+  /* right: 7.5rem; */
+  /* cursor: pointer; */
+}
+
+.matrix-add-btn{
+  padding: 7px 20px; /* Adjusted padding */
+  background-color: rgb(0, 85, 145);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 1rem; /* Adjusted font size */
+}
+
+/*  */
+.first-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background: linear-gradient(90deg, #dce6eb, #f1f5f7);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Added box shadow for depth */
+  padding: 20px; /* Increased padding for better spacing */
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(100%); /* Initially hide the sidebar off-screen */
+  z-index: 2;
+  overflow-y: auto; /* Added overflow for scroll if content exceeds height */
+}
+
+/* Sidebar show animation */
+.first-sidebar.show {
+  transform: translateX(0); 
+}
+
+/* Close icon */
+.first-sidebar .fa-lg.fa-solid.fa-xmark {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  color: #333; /* Changed close icon color */
+  font-size: 1.5rem; /* Adjusted close icon size */
+  transition: color 0.3s; /* Added transition for hover effect */
+}
+
+.first-sidebar .fa-lg.fa-solid.fa-xmark:hover {
+  color: #666; /* Darkened close icon color on hover */
+}
+
+/* Sidebar title */
+.first-sidebar .sidebar-title {
+  font-size: 1.5rem; /* Increased font size for sidebar title */
+  font-weight: bold;
+  color: #333; /* Changed title color */
+  margin-bottom: 20px; /* Added margin for spacing */
+}
+
+/* Sidebar content */
+.first-sidebar .sidebar-content {
+  color: #666; /* Changed content color */
+  line-height: 1.6; /* Improved readability with increased line height */
+}
+.sidebar-container {
+  width: 250px;
+  background-color: #f0f0f0;
+  /* padding: 20px; */
+  border-radius: 5px;
+}
+
+.heading {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.data {
+  cursor: pointer;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.data:hover {
+  background-color: #EDF2F5;
+}
+
+.select-container {
+  margin-top: 10px;
+}
+
+.submit-btn-matrix{
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-btn-matrix:hover {
+  background-color: #0056b3;
+}
+
+
+/* Sidebar links */
+.first-sidebar .sidebar-link {
+  display: block;
+  color: #333; /* Changed link color */
+  text-decoration: none;
+  margin-bottom: 10px; /* Added margin for spacing */
+}
+
+.first-sidebar .sidebar-link:hover {
+  color: #007bff; /* Changed link color on hover */
+  text-decoration: underline; /* Underline link on hover */
+}
+.matrix-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0px;
+  /* padding: 1rem; */
+}
+/* .matrix-container i {
+  /* color: rgb(55, 104, 137); */
+  /* position: fixed; */
+  /* top: 8.7rem; */
+  /* right: 11rem; */
+  /* cursor: pointer; */
+  /* z-index: 100; */
+/* } */
+.matrix-position i{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 .matrix-heading {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  font-size: 20px;
   /* position: relative; */
 }
-
+.second-sidebar i, .first-sidebar i{
+  color: rgb(55, 104, 137);
+  /* position:absolute;
+  top: 8.5rem;
+  right: 10rem; */
+}
+.table_position{
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
 .matrix-table {
-  width: 100%;
+  /* border: 1px solid #ddd; */
+    width: 63vw;
+  /* width: 70%; */
   border-collapse: collapse;
+  /* border-collapse: separate; */
 }
 
 .matrix-table th,
 .matrix-table td {
-  padding: 10px;
-  border: 1px solid #ddd;
+  padding: 5px;
+  /* border: 1px solid #ddd; */
 }
 
 .matrix-table th {
-  background-color: #f2f2f2;
+  background-color: #F1F5F9;
+  padding: 10px;
+  font-size: 20px;
+  border-bottom: 1px solid black;
 }
 
 .matrix-table tbody tr:last-child td {
   border-bottom: none;
 }
-
-.btn{
- 
+.matrix-table tr td{
+  text-align: center;
+  font-size: 15px;
+  border-bottom: 1px solid black;
+}
+.matrix-table tbody tr:nth-child(even) {
+  background-color: #f6f6f6;
 }
 
+.matrix-table tbody tr:nth-child(odd) {
+  background-color: #fdfefe;
+}
+tr td .fa-solid.fa-user-minus {
+  position: static;
+}
+tr td .fa-solid.fa-trash {
+  position: static;
+}
+.text{
+  color: rgb(0, 85, 145);
+  /* font-family: LindeDaxLig, Arial, sans-serif; */
+  padding: 0px 10px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  
+}
+.data{
+  padding: 20px 0px;
+  cursor: pointer;
+}
+.data:hover{
+  color: rgb(0, 61, 105);
+}
+/* .data:active{
+  color: rgb(185, 30, 30);
+} */
+.heading{
+  color: rgb(0, 70, 120);
+  font-family: LindeDaxLig, Arial, sans-serif;
+  font-size: 1.2rem;
+  padding: 27px 10px ;
+}
 /* .btn-alignment{
   display: flex;
   justify-content: end;

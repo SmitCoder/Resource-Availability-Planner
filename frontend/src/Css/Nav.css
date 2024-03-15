@@ -15,18 +15,31 @@
 
 .main_navbar .para {
   /* font-family: LindeDaxLig, Arial, sans-serif; */
-  font-size: 1.2rem;
+  font-size: 1.5rem;
+  font-weight: 500;
   /* color: rgb(0, 85, 145); */
   /* line-height: 1.2em; */
 }
+.home-icon {
+  padding-left: 18rem;
+  gap: 1rem;
+  display: flex;
+  cursor: pointer;
+
+}
+.fa-solid, .fas {
+  font-weight: 900;
+  padding: 6px 5px;
+}
+
 
 .media_logo {
   display: none;
 }
 
 .logo {
-  height: 55px;
-  width: 220px;
+  height: 65px;
+  width: 240px;
   /* padding: 0px 0px 1rem 0px; */
   background: transparent;
 }
