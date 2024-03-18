@@ -2,8 +2,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import moment from "moment";
 import "../Css/GenerateCalendar.css";
 // import "../Css/F.css";
-import pallate from "../Images/color-pallate.png";
-// import pallate from "../Images/color-pallate2.png";
+// import pallate from "../Images/color-pallate.png";
+import pallate from "../Images/color-pallate2.png";
 
 import axios from "axios";
 import { HD, codes } from "./configuration";
@@ -15,6 +15,7 @@ import {
   handleMonthChangeto,
   detectKeyDown,
   toggleSortingOrder,
+  handleSearchChange,
 } from "./handleFunction";
 
 function GenerateCalendar() {
@@ -29,6 +30,28 @@ function GenerateCalendar() {
   const [asc, setAsc] = useState(true);
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+
+
+  const handleMonthChangeto = (date, setEndDate) => {
+    setEndDate(moment(date).endOf("month"));
+  
+  // for validating dates as to date is always smaller than from date.
+  let lastDayOfMonth = moment(date).endOf("month");
+  const selectedToDate = moment(date);
+        // Check if fromDate is set and toDate is not earlier than fromDate
+      if (startDate && selectedToDate.isSameOrAfter(startDate)) {
+        setselectedDate(selectedDate);
+        setEndDate(lastDayOfMonth);// Update endDate for data fetching
+        fetchEmployees();
+      } 
+      else {
+        // Handle invalid selection
+        alert(`{Invalid ${selectedToDate.format("MMMM")} selection: must be after ${startDate.format("MMMM")}}`);
+        setEndDate(endDate); 
+        // setselectedDate(lastDayOfMonth);
+      }
+    }
+    
 
   useEffect(() => {
     fetchEmployees();
@@ -127,12 +150,15 @@ function GenerateCalendar() {
   };
 
   const handlechangeorder = () => {
-    // toggleSortingOrder();
-    toggleSortingOrder(setAsc, setIcon, icon); // Toggle the sorting order
-    setIcon((prevIcon) => (prevIcon === "up" ? "down" : "up"));
+    toggleSortingOrder(setAsc, setIcon, icon);
+    // toggleSortingOrder(setAsc, setIcon, icon); // Toggle the sorting order
+    // setIcon((prevIcon) => (prevIcon === "up" ? "down" : "up"));
   };
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
+  // const handleSearchChange = (e) => {
+  //   setSearchQuery(e.target.value.toUpperCase());
+  // };
+  const handleSearchChanges = (e) => {
+    handleSearchChange(e , setSearchQuery);
   };
 
   const filteredEmployees = employees.filter((employee) =>
@@ -325,7 +351,7 @@ function GenerateCalendar() {
                   placeholder="Search..."
                   id="name"
                   value={searchQuery}
-                  onChange={handleSearchChange}
+                  onChange={handleSearchChanges}
                   className="search-input"
                 />
               </div>

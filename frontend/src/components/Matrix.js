@@ -152,7 +152,7 @@ function Matrix() {
                 <td>
                   <i
                     class="fa-solid fa-trash"
-                    onClick={() => handleDelete(item.ID)}
+                    onClick={() => handleDelete(item.sapid)}
                   ></i>
                 </td>
               </tr>

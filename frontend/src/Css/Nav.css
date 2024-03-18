@@ -19,7 +19,11 @@
   /* color: rgb(0, 85, 145); */
   /* line-height: 1.2em; */
 }
-
+.home-icon{
+  display: flex;
+  gap: 3px;
+  padding-left: 16rem;
+}
 .media_logo {
   display: none;
 }

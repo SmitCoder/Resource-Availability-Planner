@@ -58,6 +58,9 @@ function Nav() {
           </div>
         </div>
         {/* </nav> */}
+      <div className="home-icon">
+        <i className="fa-solid fa-home"></i>
+      </div>
       </header>
     </>
   );

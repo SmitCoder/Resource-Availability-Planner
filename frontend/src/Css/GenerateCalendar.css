@@ -18,11 +18,14 @@
 }
 
 .container img {
-  height: 50px;
-  /* width: 18rem; */
+  /* height: 40px; */
+  width: 25rem;
 }
 .pallate2 {
   display: none;
+}
+.month i{
+  cursor: pointer;
 }
 #start_date,
 #end_date {
