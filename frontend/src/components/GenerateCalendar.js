@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useMemo } from "react";
 import moment from "moment";
 import "../Css/GenerateCalendar.css";
-import pallate from "../Images/color-pallate.jpeg";
+// import pallate from "../Images/color-pallate.jpeg";
+import pallate from "../Images/color-pallate2.png";
 import axios from "axios";
 import { HD, codes } from "./configuration";
 import "../Css/PopUpForm.css";
 import PopUpForm from "./PopUpForm";
 import {
   handleMonthChangefrom,
-  handleMonthChangeto,
+  // handleMonthChangeto,
   detectKeyDown,
   toggleSortingOrder,
+  handleSearchChange
 } from "./handleFunction";
 
 function GenerateCalendar() {
@@ -105,6 +107,26 @@ function GenerateCalendar() {
       console.error("Error fetching employee names:", error);
     }
   };
+
+  const handleMonthChangeto = (date, setEndDate) => {
+    setEndDate(moment(date).endOf("month"));
+  
+  // for validating dates as to date is always smaller than from date.
+  let lastDayOfMonth = moment(date).endOf("month");
+  const selectedToDate = moment(date);
+        // Check if fromDate is set and toDate is not earlier than fromDate
+      if (startDate && selectedToDate.isSameOrAfter(startDate)) {
+        setselectedDate(selectedDate);
+        setEndDate(lastDayOfMonth);// Update endDate for data fetching
+        fetchEmployees();
+      } 
+      else {
+        // Handle invalid selection
+        alert(`{Invalid month selection: must be after ${startDate.format("MMMM")}}`);
+        setEndDate(endDate); 
+        // setselectedDate(lastDayOfMonth);
+      }
+    }
 
   const openModal = (dateSelected, name , id) => {
     if (!isOpen) {
@@ -246,24 +268,25 @@ function GenerateCalendar() {
   };
 
   const handlechangeorder = () => {
-    console.log("clicked");
-    setAsc((prevAsc) => !prevAsc);
-    setIcon((prevIcon) => (prevIcon === "up" ? "down" : "up"));
-    const Emp = employees.sort((a,b)=>{
-      if (asc) {
-        // Ascending order
-        return b.name.localeCompare(a.name);
-      } else {
+    toggleSortingOrder(setAsc, setIcon, icon);
+    // console.log("clicked");
+    // setAsc((prevAsc) => !prevAsc);
+    // setIcon((prevIcon) => (prevIcon === "up" ? "down" : "up"));
+    // const Emp = employees.sort((a,b)=>{
+    //   if (asc) {
+    //     // Ascending order
+    //     return b.name.localeCompare(a.name);
+    //   } else {
 
-        return a.name.localeCompare(b.name); // Descending order
-      }
-    })
-    setEmployees(Emp)
+    //     return a.name.localeCompare(b.name); // Descending order
+    //   }
+    // })
+    // setEmployees(Emp)
   };
 
-  const handleSearchChange = (e) => {
-    
-    setSearchQuery(e.target.value);
+  const handleSearchChangeto = (e) => {
+    handleSearchChange(e , setSearchQuery);
+    // setSearchQuery(e.target.value);
   };
 
   const filteredEmployees = employees.filter((employee) =>
@@ -352,7 +375,7 @@ function GenerateCalendar() {
     filteredEmployees.forEach((employee) => {
       const rowData = (
         <tr key={employee.name}>
-          <td className="datarows">{employee.name} </td>
+          <td className="datarows">{employee.name} {employee.id}</td>
           {dates.map((date, index) => {
             const currentDate = startDate
               .clone()
@@ -472,7 +495,7 @@ function GenerateCalendar() {
                   placeholder="Search..."
                   id="name"
                   value={searchQuery}
-                  onChange={handleSearchChange}
+                  onChange={handleSearchChangeto}
                   className="search-input"
                 />
               </div>

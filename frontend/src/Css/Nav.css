@@ -1,3 +1,6 @@
+body{
+  overflow: hidden;
+}
 .header {
   background: linear-gradient(90deg, #f1f5f7, #dce6eb);
   display: block;
@@ -10,27 +13,29 @@
   /* width: 100%; */
   justify-content: space-around;
   align-items: center;
-  padding: 1rem 0rem;
+  /* padding: 1rem 0rem; */
+  padding-top: 0.5rem;
 }
 
 .main_navbar .para {
   /* font-family: LindeDaxLig, Arial, sans-serif; */
   font-size: 1.5rem;
-  font-weight: 500;
+  /* font-weight: 500; */
   /* color: rgb(0, 85, 145); */
   /* line-height: 1.2em; */
+  margin-bottom: 10px;
 }
 .home-icon {
-  padding-left: 18rem;
+  /* padding-left: 18rem; */
   gap: 1rem;
   display: flex;
   cursor: pointer;
 
 }
-.fa-solid, .fas {
+/* .fa-solid, .fas {
   font-weight: 900;
   padding: 6px 5px;
-}
+} */
 
 
 .media_logo {

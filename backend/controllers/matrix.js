@@ -1,7 +1,7 @@
 const sql = require("mssql");
 const config = {
-  user: "smit",
-  password: "hello123",
+  user: "SA",
+  password: "091002",
   server: "localhost\\SQLEXPRESS",
   database: "leaves",
   port: "5000",
@@ -23,7 +23,7 @@ const getTableData = (req, res) => {
     const request = new sql.Request();
 
     request.query(
-      "SELECT deptcode, Team FROM tblEmployees GROUP BY deptcode, Team",
+      "SELECT deptcode, Team FROM tblTeam GROUP BY deptcode, Team",
       function (err, recordset) {
         if (err) {
           console.log(err);

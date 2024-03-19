@@ -30,7 +30,7 @@
 }
 
 .container img {
-  height: 24px;
+  height: 20px;
   /* width: 18rem; */
 }
 .pallate2 {
@@ -112,7 +112,7 @@
   margin: 0 2rem;
   /* margin-right: 2rem; */
   position: relative;
-  max-height: 70vh;
+  height: 68vh;
   margin-top: 1rem;
   /* scrollbar-width: 1px; */
 }
