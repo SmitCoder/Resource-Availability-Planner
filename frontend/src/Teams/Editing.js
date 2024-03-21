@@ -1,28 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "../Css/Editing.css";
-import axios from "axios";
+
 
 const Editing = ({  onClose }) => {
   // Destructure props here
   const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({ name: "", description: "" });
-  const [depts, setdepts] = useState([]);
+
 
   useEffect(() => {
-    // fetchdepts();
+   
     setIsVisible(true); // Show the form once data is set
   }, []);
 
-  // const fetchdepts = async () => {
-  //   try {
-  //     const response = await axios.get("http://localhost:5000/depts");
-  //     console.log(response.data.recordsets[0]);
-  //     setdepts(response.data.recordsets[0]);
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   const handleChange = (e) => {
     setFormData({

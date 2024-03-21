@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import DropdownsWithCheckboxes from "./DropdownsWithCheckboxes";
+import DropdownsWithCheckboxes from "../frontend/src/components/DropdownsWithCheckboxes";
 import { Navigate, useNavigate } from "react-router";
 
 import "../Css/Sidebar.css";

@@ -1,3 +1,8 @@
+
+
+
+
+
 .main {
   /* margin: 2rem; */
   display: flex;
@@ -30,7 +35,7 @@
 }
 
 .container img {
-  height: 24px;
+  height: 20px;
   /* width: 18rem; */
 }
 .pallate2 {
@@ -108,11 +113,11 @@
 .table-wrapper {
   /* overscroll-behavior: contain; */
   overflow-x: auto;
-  border: 1px groove rgb(0, 85, 145);
+  border: 1px groove rgb(253, 253, 253);
   margin: 0 2rem;
   /* margin-right: 2rem; */
   position: relative;
-  max-height: 70vh;
+  height: 68vh;
   margin-top: 1rem;
   /* scrollbar-width: 1px; */
 }

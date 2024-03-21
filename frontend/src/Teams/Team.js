@@ -11,7 +11,7 @@ import {
 const Team = () => {
   const [data, setData] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [selectedTeamId, setSelectedTeamId] = useState(null);
+  // const [selectedTeamId, setSelectedTeamId] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
     fetchTeamsData();
@@ -27,7 +27,7 @@ const Team = () => {
   }, []);
   const fetchTeamsData = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/teams");
+      const response = await axios.get("http://localhost:5000/teamdata");
       setData(response.data.recordsets[0]);
     } catch (error) {
       console.log(error);
@@ -52,9 +52,7 @@ setShowForm(!showForm)
   const closeForm = () => {
     setShowForm(false); // Close the form
   };
-  const navigatetomatrix = () => {
-    navigate("/matrix");
-  };
+
   return (
     <>
       <div className="header-container">

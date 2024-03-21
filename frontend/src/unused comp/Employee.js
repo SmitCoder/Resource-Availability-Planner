@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../Css/Team.css";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
-import Editing from "../Teams/Editing.js";
+import Editing from "../frontend/src/Teams/Editing.js";
 import Employeeform from "./Employeeform.js";
 const Employee = () => {
   const [data, setData] = useState([]);

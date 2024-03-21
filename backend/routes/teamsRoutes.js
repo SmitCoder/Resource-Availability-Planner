@@ -9,6 +9,8 @@ router.post("/teamss", main.updateTableData);
 
 router.post("/DropDownData", main.getData);
 
+router.get("/teamdata" , main.getTeam);
+
 // router.post("/", employeeController.getAllEmployees);
 
 module.exports = router;

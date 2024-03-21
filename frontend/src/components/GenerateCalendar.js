@@ -10,7 +10,6 @@ import {
   handleMonthChangefrom,
   handleMonthChangeto,
   detectKeyDown,
-  toggleSortingOrder,
 } from "./handleFunction";
 
 function GenerateCalendar() {
@@ -28,19 +27,11 @@ function GenerateCalendar() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [dropdownData, setDropdownData] = useState([]);
-  const [original , setoriginal] = useState([])
+  // const [original , setoriginal] = useState([])
   const [dropdownFetchedData, setDropdownFetchedData] = useState([]);
 
   useEffect(() => {
-    // if(selectedOption === "")
-    // {
       fetchEmployees();
-    //   console.log("hi");
-
-    // }else{
-
-    // }
-   
   }, [startDate, endDate, searchQuery]);
 
   useEffect(() => {
@@ -86,20 +77,10 @@ function GenerateCalendar() {
     
 
       const combinedData = mergedDataWithTag.concat(employeesDataWithTag);
-    
-      // combinedData.sort((a, b) => {
-      //   if (asc) {
-      //     return a.name.localeCompare(b.name); // Ascending order
-      //   } else {
-      //     return b.name.localeCompare(a.name); // Descending order
-      //   }
-      // });
       setEmployees(combinedData);
       console.log(combinedData);
     }
-    // else{
-    //   setEmployees(filteredData)
-    // }
+   
       
     } catch (error) {
       console.error("Error fetching employee names:", error);
@@ -130,27 +111,6 @@ function GenerateCalendar() {
         window.location.reload();
       }
       console.log("Form data submitted successfully:", response.data);
-
-      // setEmployees((prevEmployees) => {
-      //   const updatedEmployees = prevEmployees.map((existingEmployee) => {
-      //     const updatedEmployee = response.data.find(
-      //       (updated) => updated.name === existingEmployee.name
-      //     );
-
-      //     // If an updated employee is found, merge only specific fields
-      //     if (updatedEmployee) {
-      //       // Here you can specify which fields to update
-      //       return { ...existingEmployee, ...updatedEmployee };
-      //     }
-
-      //     // If no updated data is found for the existing employee, keep it unchanged
-      //     return existingEmployee;
-      //   });
-
-      //   return updatedEmployees;
-      // });
-
-      // Close the form after successful submission
       setIsOpen(false);
     } catch (error) {
       console.error("Error submitting form data:", error);
@@ -161,24 +121,9 @@ function GenerateCalendar() {
   const handleDropdownChange = async (e) => {
     console.log("Getting into function");
     console.log("into clicked");
-    // console.log(e.target.value)
-    // const id = e.target.value
-    // const selectedValue = e.target.value;
-    // setSelectedOption(selectedValue);
-    // console.log(selectedValue);
-
-    // const [deptcode, team] = selectedValue.split("-");
-    // console.log(deptcode, team);
     try {
       const response = await axios.post("http://localhost:5000/teams", {
-        // deptcode,
-        // team,
-        // selectedValue,
-        // deptcode,
-        // team,
-        // id
       });
-      // console.log("Dropdown data response:", response.data); // Log response data
       setDropdownData(response.data.recordsets[0]);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -198,42 +143,9 @@ function GenerateCalendar() {
   }, [employees, asc]);
 
 
-  // const handleDropdownData = async (e) => {
-  //   console.log("Getting into function");
-  //   const selectedValue = e.target.value;
-  //   setSelectedOption(selectedValue);
-  //   console.log(selectedValue);
-     
-
-  //   // const [deptcode, team] = selectedValue.split("-");
-  //   // console.log(deptcode, team);
-  //   try {
-  //     const response2 = await axios.post("http://localhost:5000/DropDownData", {
-  //       // deptcode,
-  //       // team,
-  //       selectedValue
-  //     });
-  //     console.log("Dropdown data response:", response2.data);
-  //     const filteredData = response2.data.filter(employee =>
-  //       employee.name.toLowerCase().includes(searchQuery.toLowerCase())
-  //     );
-  //     // if (Array.isArray(response2.data)) {
-  //       setEmployees(filteredData);
-     
-   
-  //       console.log(filteredData);
-        
-  //     // } else {
-  //       // console.error("Invalid response for employees data:", response2.data);
-  //     // }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
   const handleDropdownData = async (e) => {
     const selectedValue = e.target.value;
     setSelectedOption(selectedValue);
-  
     try {
       const response2 = await axios.post("http://localhost:5000/DropDownData", {
         selectedValue,
@@ -262,7 +174,6 @@ function GenerateCalendar() {
   };
 
   const handleSearchChange = (e) => {
-    
     setSearchQuery(e.target.value);
   };
 
@@ -454,11 +365,13 @@ function GenerateCalendar() {
                   // placeholder="select it"
                   onChange={(e) => handleDropdownData(e)}
                 >
-                  <option value="">Select option</option>
+                  <option value="">Select Team</option>
                   {dropdownData.map((item, index) => (
                     <option key={index} value={item.Team_id}>
                   
                       {item.Name}
+                      {item.deptcode}
+                      {item.Team_id}
                     </option>
                   ))}
                 </select>

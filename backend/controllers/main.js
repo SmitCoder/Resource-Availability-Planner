@@ -49,7 +49,9 @@ const getTableData = (req, res) => {
     }
 
     const request = new sql.Request();
-const query  = "select * from tblTeam";
+// const query  = "select Name from tblTeam UNION select deptcode from tblEmployees";
+const query  = `select  distinct(deptcode) ,Team_id , tblTeam.Name 
+ from tblTeam full outer join tblEmployees on tblTeam.Name = tblEmployees.deptcode`;
     // const query  = " "SELECT deptcode, Team , COUNT(*) AS record_count FROM tblEmployees WHERE Team <> '' AND deptcode <> ''  GROUP BY deptcode , Team","
     request.query(query ,
      
@@ -195,12 +197,77 @@ const updateTableData = (req, res) => {
 //   });
 // };
 
+// const getData = (req, res) => {
+//   // const { deptcode, team } = req.body;
+//   const {selectedValue} = req.body;
+//   console.log(selectedValue);
+
+//   // console.log(deptcode, team);
+//   sql.connect(config, function (err) {
+//     if (err) {
+//       console.log(err);
+//       return res.status(500).send("Internal Server Error");
+//     }
+
+//     const request = new sql.Request();
+
+//     // request.input("deptcode", sql.VarChar, deptcode);
+//     request.input("selectedValue", sql.NVarChar, selectedValue);
+//     console.log(typeof(selectedValue));
+//     let query ;
+//     if(typeof(selectedValue)  === 'string')
+//     {
+//     query  =  ` select tblEmployees.ID ,  tblEmployees.Name , FromDate , ToDate , APPLDays, LeaveID
+//     ,ModifyFromHalf ,ModifyToHalf
+//     from tblEmployees inner join COSEC on tblEmployees.ID = COSEC.ID
+//     where deptcode = 'ITE'` ;
+//     }
+//     else if()
+//     {
+//       query = `SELECT  
+//       Employee_id,
+//       COSEC.ID,
+//       tblEmployees.Name,
+//       COALESCE(COSEC.FromDate, tblExtLeaves.FromDate) AS FromDate,
+//     COALESCE(COSEC.ToDate , tblExtLeaves.ToDate) AS ToDate,
+  
+//       COALESCE(COSEC.LeaveID,tblExtLeaves.LeaveID) AS LeaveID,
+//       COSEC.APPLDays,
+//       COSEC.ModifyFromHalf,
+//       COSEC.ModifyToHalf
+//   FROM 
+//       Mapping
+//   INNER JOIN tblEmployees ON Mapping.Employee_id = tblEmployees.ID
+//   LEFT JOIN COSEC ON Mapping.Employee_id = COSEC.ID
+//   LEFT JOIN tblExtLeaves ON Mapping.Employee_id = tblExtLeaves.ID
+//   WHERE 
+//       Mapping.Team_id = @selectedValue`
+//     }
+
+
+//     request.query(query
+//      ,
+//       function (err, recordset) {
+//         if (err) {
+//           console.log(err);
+//           return res.status(500).send("Internal Server Error");
+//         }
+//         // console.log(recordset);
+//         const groupedData = groupData(recordset);
+//         res.json(groupedData);
+//       }
+    
+   
+//     );
+    
+//   });
+
+// };
+
 const getData = (req, res) => {
-  // const { deptcode, team } = req.body;
-  const {selectedValue} = req.body;
+  const { selectedValue } = req.body;
   console.log(selectedValue);
 
-  // console.log(deptcode, team);
   sql.connect(config, function (err) {
     if (err) {
       console.log(err);
@@ -209,58 +276,93 @@ const getData = (req, res) => {
 
     const request = new sql.Request();
 
-    // request.input("deptcode", sql.VarChar, deptcode);
-    request.input("selectedValue", sql.Int, selectedValue);
+    let query;
+    let inputType;
 
-    request.query(
-      // `SELECT tblTeam.Name ,tblTeam.deptcode, COSEC.FromDate,
-      //  COSEC.ToDate, COSEC.LeaveID, COSEC.APPLDays, COSEC.ModifyFromHalf,
-      //  COSEC.ModifyToHalf
-      //  FROM tblTeam 
-      //  LEFT JOIN COSEC ON tblTeam.ID = COSEC.ID 
-      //  WHERE deptcode = @deptcode AND Team = @team`,
-      //  `SELECT tblEmployees.Name ,tblEmployees.deptcode, COSEC.FromDate,
-      //  COSEC.ToDate, COSEC.LeaveID, COSEC.APPLDays, COSEC.ModifyFromHalf,
-      //  COSEC.ModifyToHalf
-      //  FROM tblEmployees 
-      //  LEFT JOIN COSEC ON tblEmployees.ID = COSEC.ID 
-      //  WHERE Team`,
-      // ` select *  from COSEC right join Mapping on COSEC.ID = Mapping.Employee_id 
-      // where Mapping.Team_id =2 `,
-      `SELECT  
-      Employee_id,
-      COSEC.ID,
-      tblEmployees.Name,
-      COALESCE(COSEC.FromDate, tblExtLeaves.FromDate) AS FromDate,
-    COALESCE(COSEC.ToDate , tblExtLeaves.ToDate) AS ToDate,
-  
-      COALESCE(COSEC.LeaveID,tblExtLeaves.LeaveID) AS LeaveID,
-      COSEC.APPLDays,
-      COSEC.ModifyFromHalf,
-      COSEC.ModifyToHalf
-  FROM 
-      Mapping
-  INNER JOIN tblEmployees ON Mapping.Employee_id = tblEmployees.ID
-  LEFT JOIN COSEC ON Mapping.Employee_id = COSEC.ID
-  LEFT JOIN tblExtLeaves ON Mapping.Employee_id = tblExtLeaves.ID
-  WHERE 
-      Mapping.Team_id = @selectedValue`,
+    // Try parsing selectedValue as an integer
+    const parsedValue = parseInt(selectedValue);
+
+    if (!isNaN(parsedValue)) {
+      // If it's an integer, use it as input for the first query
+      query = `
+        SELECT  
+          Employee_id,
+          COSEC.ID,
+          tblEmployees.Name,
+          COALESCE(COSEC.FromDate, tblExtLeaves.FromDate) AS FromDate,
+          COALESCE(COSEC.ToDate , tblExtLeaves.ToDate) AS ToDate,
+          COALESCE(COSEC.LeaveID, tblExtLeaves.LeaveID) AS LeaveID,
+          COSEC.APPLDays,
+          COSEC.ModifyFromHalf,
+          COSEC.ModifyToHalf
+        FROM 
+          Mapping
+        INNER JOIN tblEmployees ON Mapping.Employee_id = tblEmployees.ID
+        LEFT JOIN COSEC ON Mapping.Employee_id = COSEC.ID
+        LEFT JOIN tblExtLeaves ON Mapping.Employee_id = tblExtLeaves.ID
+        WHERE 
+          Mapping.Team_id = @selectedValue`;
+      
+      inputType = sql.NVarChar;
+    } else {
+      // If it's not an integer, use it as input for the second query
+      query = `
+        SELECT tblEmployees.ID, tblEmployees.Name, FromDate, ToDate, APPLDays, LeaveID, ModifyFromHalf, ModifyToHalf
+        FROM tblEmployees
+        INNER JOIN COSEC ON tblEmployees.ID = COSEC.ID
+        WHERE deptcode = @selectedValue`;
+      
+      inputType = sql.VarChar;
+    }
+
+    request.input("selectedValue", inputType, selectedValue);
+
+    request.query(query, function (err, recordset) {
+      if (err) {
+        console.log(err);
+        return res.status(500).send("Internal Server Error");
+      }
+      const groupedData = groupData(recordset);
+      res.json(groupedData);
+    });
+  });
+};
+
+const getTeam = (req, res) => {
+  sql.connect(config, function (err) {
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Internal Server Error");
+    }
+
+    const request = new sql.Request();
+// const query  = "select Name from tblTeam UNION select deptcode from tblEmployees";
+// const query  = `select  distinct(deptcode) ,Team_id , tblTeam.Name 
+//  from tblTeam full outer join tblEmployees on tblTeam.Name = tblEmployees.deptcode`;
+    // const query  = " "SELECT deptcode, Team , COUNT(*) AS record_count FROM tblEmployees WHERE Team <> '' AND deptcode <> ''  GROUP BY deptcode , Team","
+    const query = 'SELECT * from tblTeam'
+    request.query(query ,
+     
       function (err, recordset) {
         if (err) {
           console.log(err);
           return res.status(500).send("Internal Server Error");
         }
-        console.log(recordset);
-        const groupedData = groupData(recordset);
-        res.json(groupedData);
+
+        // send records as a response
+        res.json(recordset);
+        // console.log("data is sended");
+        // res.end();
+        // console.log("connectio ended");
+        //   console.log(recordset);
       }
     );
   });
 };
-
 module.exports = {
   getTableData,
   pushTableData,
   updateTableData,
   getData,
+  getTeam
 };
