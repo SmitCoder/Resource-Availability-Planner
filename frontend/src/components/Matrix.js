@@ -8,10 +8,6 @@ import {
   detectKeyDown,
 } from "./handleFunction";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { alignProperty } from "@mui/material/styles/cssUtils";
-
 function Matrix() {
   const [data, setData] = useState([]);
   const location = useLocation();
@@ -154,11 +150,9 @@ function Matrix() {
 
         if (response.status === 200) {
           console.log("Data Deleted Successfully");
-          toast.success("Data deleted successfully");
           
         } else {
           console.log("Failed to delete the data");
-          toast.error("Failed to delete data");
         }
         window.location.reload();
       }
@@ -169,7 +163,7 @@ function Matrix() {
   return (
     <div className="matrix-container">
       <div className="main-container">
-        <div className="content">  {teamid} {team_Name}</div>
+        <div className="content">   {team_Name}</div>
         <div className="icon-btn">
           <button onClick={toggleFirstSidebar} className="matrix-add-btn">Add<i className="fa-solid fa-plus" ></i></button>
         </div>
@@ -235,7 +229,6 @@ function Matrix() {
 
         </div>
       </div>
-      <ToastContainer autoClose={2000}/>
     </div>
   );
 }

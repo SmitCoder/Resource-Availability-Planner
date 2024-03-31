@@ -340,7 +340,8 @@ const getTeam = (req, res) => {
 // const query  = `select  distinct(deptcode) ,Team_id , tblTeam.Name 
 //  from tblTeam full outer join tblEmployees on tblTeam.Name = tblEmployees.deptcode`;
     // const query  = " "SELECT deptcode, Team , COUNT(*) AS record_count FROM tblEmployees WHERE Team <> '' AND deptcode <> ''  GROUP BY deptcode , Team","
-    const query = 'SELECT * from tblTeam'
+    const query = `SELECT * from tblTeam  ;SELECT deptcode, Team , COUNT(*) AS record_count FROM tblEmployees WHERE Team <> '' 
+    AND deptcode <> ''  GROUP BY deptcode , Team`
     request.query(query ,
      
       function (err, recordset) {
@@ -350,7 +351,7 @@ const getTeam = (req, res) => {
         }
 
         // send records as a response
-        res.json(recordset);
+        res.json(recordset);console.log(recordset);
         // console.log("data is sended");
         // res.end();
         // console.log("connectio ended");
@@ -359,10 +360,29 @@ const getTeam = (req, res) => {
     );
   });
 };
+const deleteTeam = (req , res)=>{
+  const {teamid} = req.body;
+  console.log(teamid);
+sql.connect(config , function(err) {
+  if(err)
+  {
+    console.log(err);
+  }
+  const  request = new sql.Request();
+  const deletequery = `  delete from tblTeam where Team_id = ${teamid};
+  delete from Mapping where Team_id = ${teamid}`;
+  request.query(deletequery , function(err) {
+    if(err)
+    {console.log(err);}
+    res.json("data delete successfully")
+  })
+})
+}
 module.exports = {
   getTableData,
   pushTableData,
   updateTableData,
   getData,
-  getTeam
+  getTeam,
+  deleteTeam
 };

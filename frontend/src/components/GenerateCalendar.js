@@ -6,11 +6,10 @@ import axios from "axios";
 import { HD, codes } from "./configuration";
 import "../Css/PopUpForm.css";
 import PopUpForm from "./PopUpForm";
-import {
-  handleMonthChangefrom,
-  handleMonthChangeto,
-  detectKeyDown,
-} from "./handleFunction";
+import {handleMonthChangefrom,handleMonthChangeto,detectKeyDown, handleDropdownData,handleDropdownChange} from "./handleFunction";
+import { SearchBar } from "./SearchBar";
+import { TeamDropDown } from "./TeamDropDown";
+
 
 function GenerateCalendar() {
   const [employees, setEmployees] = useState([]);
@@ -21,7 +20,7 @@ function GenerateCalendar() {
   const [selectedEmployee, setSelectedEmployee] = useState("");
   const [selectedDate, setselectedDate] = useState("");
   const [name, setname] = useState("");
-  const [id , setid] = useState("")
+  const [id, setid] = useState("")
   const [asc, setAsc] = useState(true);
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -31,7 +30,7 @@ function GenerateCalendar() {
   const [dropdownFetchedData, setDropdownFetchedData] = useState([]);
 
   useEffect(() => {
-      fetchEmployees();
+    fetchEmployees();
   }, [startDate, endDate, searchQuery]);
 
   useEffect(() => {
@@ -40,7 +39,7 @@ function GenerateCalendar() {
     );
     setEmployees(filteredData);
   }, [dropdownFetchedData, searchQuery]);
-  
+
   useEffect(() => {
     document.addEventListener("keydown", (e) => detectKeyDown(e, closeModal));
     return () => {
@@ -52,42 +51,42 @@ function GenerateCalendar() {
 
   const fetchEmployees = async () => {
     try {
- 
-      if(selectedOption === ""){
-      const [mergerRes, employeesRes] = await Promise.all([
-        axios.post("http://localhost:5000/COSEC"),
-        axios.post("http://localhost:5000/", {
-          startDate: startDate.format("YYYY-MM-DD"),
-          endDate: endDate.format("YYYY-MM-DD"),
-          input,
-          selectedDate,
-          selectedEmployee,
-        }),
-      ]);
 
-      const mergedDataWithTag = mergerRes.data.map((item) => ({
-        ...item,
-        source: "Merger API",
-      }));
+      if (selectedOption === "") {
+        const [mergerRes, employeesRes] = await Promise.all([
+          axios.post("http://localhost:5000/COSEC"),
+          axios.post("http://localhost:5000/", {
+            startDate: startDate.format("YYYY-MM-DD"),
+            endDate: endDate.format("YYYY-MM-DD"),
+            input,
+            selectedDate,
+            selectedEmployee,
+          }),
+        ]);
 
-      const employeesDataWithTag = employeesRes.data.map((item) => ({
-        ...item,
-        source: "Employees API",
-      }));
-    
+        const mergedDataWithTag = mergerRes.data.map((item) => ({
+          ...item,
+          source: "Merger API",
+        }));
 
-      const combinedData = mergedDataWithTag.concat(employeesDataWithTag);
-      setEmployees(combinedData);
-      console.log(combinedData);
-    }
-   
-      
+        const employeesDataWithTag = employeesRes.data.map((item) => ({
+          ...item,
+          source: "Employees API",
+        }));
+
+
+        const combinedData = mergedDataWithTag.concat(employeesDataWithTag);
+        setEmployees(combinedData);
+        console.log(combinedData);
+      }
+
+
     } catch (error) {
       console.error("Error fetching employee names:", error);
     }
   };
 
-  const openModal = (dateSelected, name , id) => {
+  const openModal = (dateSelected, name, id) => {
     if (!isOpen) {
       setIsOpen(true);
       setselectedDate(dateSelected._d);
@@ -106,27 +105,13 @@ function GenerateCalendar() {
         "http://localhost:5000/submitFormData",
         formData
       );
-      if(response.status === 200)
-      {
+      if (response.status === 200) {
         window.location.reload();
       }
       console.log("Form data submitted successfully:", response.data);
       setIsOpen(false);
     } catch (error) {
       console.error("Error submitting form data:", error);
-    }
-  };
-
-
-  const handleDropdownChange = async (e) => {
-    console.log("Getting into function");
-    console.log("into clicked");
-    try {
-      const response = await axios.post("http://localhost:5000/teams", {
-      });
-      setDropdownData(response.data.recordsets[0]);
-    } catch (error) {
-      console.error("Error fetching data:", error);
     }
   };
 
@@ -143,25 +128,11 @@ function GenerateCalendar() {
   }, [employees, asc]);
 
 
-  const handleDropdownData = async (e) => {
-    const selectedValue = e.target.value;
-    setSelectedOption(selectedValue);
-    try {
-      const response2 = await axios.post("http://localhost:5000/DropDownData", {
-        selectedValue,
-      });
-      setDropdownFetchedData(response2.data);
-      console.log(response2.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
   const handlechangeorder = () => {
     console.log("clicked");
     setAsc((prevAsc) => !prevAsc);
     setIcon((prevIcon) => (prevIcon === "up" ? "down" : "up"));
-    const Emp = employees.sort((a,b)=>{
+    const Emp = employees.sort((a, b) => {
       if (asc) {
         // Ascending order
         return b.name.localeCompare(a.name);
@@ -171,10 +142,6 @@ function GenerateCalendar() {
       }
     })
     setEmployees(Emp)
-  };
-
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
   };
 
   const filteredEmployees = employees.filter((employee) =>
@@ -306,7 +273,7 @@ function GenerateCalendar() {
             return (
               <td
                 onClick={
-                  clickable ? () => openModal(currentDate, employee.name , employee.id) : null
+                  clickable ? () => openModal(currentDate, employee.name, employee.id) : null
                 }
                 key={`${employee.name}-${date.date}-${index}`}
                 style={{ backgroundColor, cursor: "pointer", zIndex: "" }}
@@ -319,7 +286,7 @@ function GenerateCalendar() {
     });
 
     return [monthHeaderRow, headerRow, ...tableRows];
-  }, [sortedEmployees ,employees, startDate, endDate]);
+  }, [sortedEmployees, employees, startDate, endDate]);
 
   return (
     <>
@@ -327,6 +294,8 @@ function GenerateCalendar() {
         <div className="container">
           <div className="main">
             <img className="pallate2" src={pallate} alt="" />
+
+            {/* Date Selector */}
             <div className="dates-controler">
               <div className="start_date">
                 <input
@@ -358,37 +327,18 @@ function GenerateCalendar() {
                   } // Pass setEndDate
                 />
               </div>
+
               <div>
-                <select className="team-selection"
-                  // value={selectedOption}
-                  onClick={(e) => handleDropdownChange(e)}
-                  // placeholder="select it"
-                  onChange={(e) => handleDropdownData(e)}
-                >
-                  <option value="">Select Team</option>
-                  {dropdownData.map((item, index) => (
-                    <option key={index} value={item.Team_id}>
-                  
-                      {item.Name}
-                      {item.deptcode}
-                      {item.Team_id}
-                    </option>
-                  ))}
-                </select>
+                <TeamDropDown
+                  handleDropdownChange={(e) => handleDropdownChange(e, setDropdownData)}
+                  handleDropdownData={(e) => handleDropdownData(e, setSelectedOption, setDropdownFetchedData)}
+                  dropdownData={dropdownData}
+                />
               </div>
             </div>
 
             <div className="container2">
-              <div className="searchBar">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  id="name"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  className="search-input"
-                />
-              </div>
+              <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
               <img src={pallate} alt="" />
             </div>
           </div>
@@ -406,10 +356,9 @@ function GenerateCalendar() {
           <div className="table-wrapper">
             {isOpen && <div className="overlay"></div>}
             <table
-              border={2}
-              className={`table onClick={handleTableClick} ${
-                isOpen ? "blur" : ""
-              } `}
+              border={1}
+              className={`table onClick={handleTableClick} ${isOpen ? "blur" : ""
+                } `}
               id="myTable"
             >
               <tbody>{createTableRows}</tbody>

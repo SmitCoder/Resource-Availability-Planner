@@ -1,18 +1,13 @@
-import React from "react";
-
-function SearchBar({ searchQuery, handleSearchChange }) {
+export const SearchBar = ({ searchQuery, setSearchQuery }) => {
   return (
-    <div className="search-bar">
+    <div className="searchBar">
       <input
         type="text"
-        id="name"
-        placeholder="Search By Name"
+        placeholder="Search..."
         value={searchQuery}
-        onChange={handleSearchChange}
+        onChange={(e) => setSearchQuery(e.target.value)}
         className="search-input"
       />
     </div>
   );
-}
-
-export default SearchBar;
+};

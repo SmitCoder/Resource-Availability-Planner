@@ -11,6 +11,8 @@ router.post("/DropDownData", main.getData);
 
 router.get("/teamdata" , main.getTeam);
 
+router.post("/deleteTeam" , main.deleteTeam);
+
 // router.post("/", employeeController.getAllEmployees);
 
 module.exports = router;

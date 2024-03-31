@@ -1,8 +1,3 @@
-
-
-
-
-
 .main {
   /* margin: 2rem; */
   display: flex;
@@ -13,25 +8,21 @@
 
 .Handlebar {
   padding: 0.4rem 0.5rem;
-  border: 1px solid #ccc;
   border-radius: 3px;
   transition: border-color 0.3s ease;
   border: 1.5px solid rgb(0, 0, 0);
 }
 .team-selection{
   padding: 0.4rem 0.5rem;
-  border: 1px solid #ccc;
   border-radius: 5px;
   transition: border-color 0.3s ease;
   border: 1.5px solid rgb(0, 0, 0);
 }
 .team-selection:hover{
-  border-color: rgb(0, 85, 145);
-  border-width: 2px;
+  border: 1.5px solid rgb(0, 85, 145);
 }
 .Handlebar:hover {
-  border-color: rgb(0, 85, 145);
-  border-width: 2px;
+  border: 1.5px solid rgb(0, 85, 145);
 }
 
 .container img {
@@ -65,10 +56,12 @@
 }
 .container2 .searchBar input {
   padding: 0.4rem 0.5rem;
-  border: 1px solid #ccc;
   border-radius: 6px;
   transition: border-color 0.3s ease;
   border: 1.5px solid rgb(0, 0, 0);
+}
+.container2 .searchBar input:hover {
+  border: 1.5px solid rgb(0, 85, 145);
 }
 .dates-controler {
   display: flex;
@@ -84,40 +77,17 @@
   margin-top: 20px;
 }
 
-/* . */
-.search-input {
-  padding: 8px 5px 5px 5px;
-  border: 1px solid #cbc7c7;
-  border-radius: 6px;
-  transition: border-color 0.3s ease;
-  font-size: small;
-}
-
-.search-input:hover,
-.search-input:focus {
-  border-color: rgb(0, 85, 145); /* Change to your desired hover color */
-}
-
-.search-input::before {
-  content: "";
-  position: relative;
-  border: 2px solid rgb(0, 85, 145);
-}
-.search-input::after {
-  border: 1px solid rgb(0, 85, 145);
-  text-decoration: none;
-  border-radius: 15px;
-  background-color: rgb(0, 85, 145);
-}
-
 .table-wrapper {
   /* overscroll-behavior: contain; */
   overflow-x: auto;
-  border: 1px groove rgb(253, 253, 253);
+  /* border: 1px groove rgb(0, 85, 145); */
+  border-top: 0.5px solid black;
+  border-left: 0.5px solid black;
+  /* line-height: 65vh; */
+  /* border-bottom: 1px solid black; */
   margin: 0 2rem;
-  /* margin-right: 2rem; */
   position: relative;
-  height: 68vh;
+  max-height: 65vh;
   margin-top: 1rem;
   /* scrollbar-width: 1px; */
 }
@@ -136,81 +106,86 @@ span i {
   display: flex;
 } */
 #myTable {
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  
   min-width: 100%; /* Ensure the table fills the container */
-  table-layout: fixed; /* Prevent columns from resizing */
+  table-layout: fixed; 
+  
+  
+  /* Prevent columns from resizing */
+  /* border: none; */
 }
 #myTable tbody td {
   background-color: white;
-  /* max-width: 1rem; */
+  min-width: 1rem;
   /* align-items: center; */
   text-align: center;
   align-content: center;
-  /* width: 1rem; */
   /* font-size: 15px; */
 }
 #myTable th,
 #myTable td {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   padding: 7px; /* Adjust padding as needed */
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(172, 29, 29);
   text-align: center;
   align-items: center;
-}
+  /* border: -0.5px solid black; */
+  /* border-width: 10px; */
+  /* border: none; */
+  border-top: none;
+  border-left: none;
 
-/* #myTable th {
-  position: sticky;
-  top: 0;
+  /* border-width: 0.1px; */
   
-} */
+}
 
 #myTable tr:first-child {
   position: sticky;
   left: 0;
-  top: -2px;
-  z-index: 1; /* Ensure sticky cells stay above the scrollable area */
-  background-color: rgb(13, 5, 12);
+  /* top: -2px; */
+  top: 0;
+  background-color:blue;
+  
+  z-index: 1; 
+  /* min-width: 12px;Ensure sticky cells stay above the scrollable area */
+  /* background-color: rgb(189, 70, 173); */
+  /* border: 1px solid black; */
+  /* border-top: none; */
 }
 #myTable tr:nth-child(2) {
   position: sticky;
-  top: 32px;
-  /* z-index: 1; Ensure sticky cells stay above the scrollable area */
-  background-color: rgb(12, 6, 12);
+  top: 36px;
+  /* border-left: none; */
+  
+  
 }
+
 #myTable th:first-child {
   background-color: white;
   position: sticky;
   top: 0;
-  left: -2px;
+  /* left: -2px; */
+  left: 0px;
+  /* background-color: red; */
+  /* width: px; */
   z-index: 5;
 }
 
 .datarows {
   position: sticky;
   left: 0px;
-  background-color: rgb(245, 111, 245);
-}
-/* #myTable thead th {
-    position: sticky;
-    top: 0;
-    background-color: white;
-  } */
+  /* border: 1.5px solid black; */
+  /* border-top: 2px solid black; */
 
-/* #myTable tbody td {
-    position: sticky;
-    left: 0;
-    top: 0;
-    background-color: rgb(73, 20, 20);
-  } */
+  
+  /* background-color: rgb(245, 111, 245); */
+}
 
 .blur {
   filter: blur(3px); /* Apply blur effect when modal is open */
 }
-
-/* .search-input:hover,
-  .search-input:focus {
-    border-color: #08315c; 
-  } */
 
 @media screen and (max-width: 1000px) {
   .main {

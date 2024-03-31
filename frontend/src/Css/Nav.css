@@ -29,7 +29,7 @@ body{
   margin-bottom: 10px;
 }
 .home-icon {
-  padding-left: 17rem;
+  /* padding-left: 17rem; */
   gap: 1rem;
   display: flex;
   cursor: pointer;
@@ -69,7 +69,5 @@ body{
   .logo {
     display: none;
   }
-  .home-icon{
-    padding-left: 4rem;
-  }
+
 }

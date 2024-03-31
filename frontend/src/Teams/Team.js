@@ -29,6 +29,7 @@ const Team = () => {
     try {
       const response = await axios.get("http://localhost:5000/teamdata");
       setData(response.data.recordsets[0]);
+      console.log(response.data.recordsets[0]);
     } catch (error) {
       console.log(error);
     }
@@ -53,6 +54,19 @@ setShowForm(!showForm)
     setShowForm(false); // Close the form
   };
 
+  const deleteTeam = (teamid)=>{
+    console.log(teamid);
+  try {
+    const response = axios.post("http://localhost:5000/deleteTeam" , {teamid})
+    if(response.status === 200)
+    {
+      console.log("Team Deleted Successfully");
+    }
+    window.location.reload()
+  } catch (error) {
+    console.log("error deleting team");
+  }
+  }
   return (
     <>
       <div className="header-container">
@@ -82,7 +96,7 @@ setShowForm(!showForm)
         <table className="teams-table">
           <thead>
             <tr>
-              <th>Id</th>
+           
               <th>Name</th>
               {/* <th>Description</th> */}
               <th>Description</th>
@@ -93,16 +107,19 @@ setShowForm(!showForm)
           <tbody>
             {data.map((team) => (
               <tr key={team.id}>
-                <td>{team.Team_id}</td>
+          
                 <td>
                   {team.Name}
                 </td>
                 {/* <td>{team.Name}</td> */}
                 <td>{team.Description}</td>
+   
                 <td>
-                  <button onClick={() => openform( team.Team_id , team.Name)}>
-                    <EditIcon style={{ height: "20px" }} />
-                  </button>
+                  <i className="fa-solid fa-pen" onClick={() => openform( team.Team_id , team.Name)}></i>
+                    {/* <EditIcon style={{ height: "20px" }} */}
+                  
+                  
+                  <i className="fa-solid fa-trash" onClick={()=>deleteTeam(team.Team_id)}></i>
                 </td>
               </tr>
             ))}

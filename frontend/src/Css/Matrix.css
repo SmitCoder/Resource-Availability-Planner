@@ -176,6 +176,7 @@
     justify-content: center;
     align-items: center;
     padding: 2rem 0px;
+  
   /* padding: 1rem; */
 }
 /* .matrix-container i {
@@ -208,12 +209,19 @@
   display: flex;
   justify-content: center;
   margin-top: 1rem;
+  border: 1px solid white;
+  max-height: 63vh;
+  
+  overflow: auto;
 }
+
 .matrix-table {
   /* border: 1px solid #ddd; */
     width: 63vw;
   /* width: 70%; */
   border-collapse: collapse;
+  overflow: auto;
+
   /* border-collapse: separate; */
 }
 
